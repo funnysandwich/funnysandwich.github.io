@@ -58,7 +58,7 @@ function draw() {
     
     textSize(20);
     fill(0);
-    text("你好呀繁體字", 500, 500);
+    text("你好呀繁體字", mouseX, 500);
   
 
 
