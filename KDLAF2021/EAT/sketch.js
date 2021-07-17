@@ -11,9 +11,9 @@ var open_info;
 
 
 function preload() {
-    //img_poster_bowl00 = loadImage("data/img_poster_bowl00.png");
-    //img_poster_bowl01 = loadImage("data/img_poster_bowl01.png");
-    //img_poster_sideText00 = loadImage("data/img_poster_sideText00.png");
+    img_poster_bowl00 = loadImage("data/img_poster_bowl00.png");
+    img_poster_bowl01 = loadImage("data/img_poster_bowl01.png");
+    img_poster_sideText00 = loadImage("data/img_poster_sideText00.png");
 }
 
 
@@ -38,6 +38,8 @@ function setup() {
 function draw() {
     background(255, 128, 128);
     
+    iamge(img_poster_sideText00, mouseX, -100);
+    
     
     if(open_info){
         fill(0, 150);
@@ -57,7 +59,7 @@ function draw() {
     
     textSize(20);
     fill(0);
-    text("你好呀繁體字", mouseX, 500);
+    text("你好呀繁體字", 500, 500);
   
 
 
