@@ -1,5 +1,5 @@
-var img_poster_bowl00, img_poster_bowl01;
-var img_poster_sideText00;
+let img_poster_bowl00, img_poster_bowl01;
+let img_poster_sideText00;
 
 
 var is_pc;
