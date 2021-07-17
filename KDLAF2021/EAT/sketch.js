@@ -38,7 +38,7 @@ function setup() {
 function draw() {
     background(255, 128, 128);
     
-    iamge(img_poster_sideText00, mouseX, -100);
+    image(img_poster_sideText00, mouseX, -100);
     
     
     if(open_info){
