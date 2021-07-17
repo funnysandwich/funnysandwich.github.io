@@ -37,6 +37,7 @@ function setup() {
 
 function draw() {
     background(255, 128, 128);
+    image(img_poster_bowl00, 0, 0);
     
     
     if(open_info){
