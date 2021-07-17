@@ -12,8 +12,8 @@ var open_info;
 
 function preload() {
     img_poster_bowl00 = loadImage("data/img_poster_bowl00.png");
-    //img_poster_bowl01 = loadImage("data/img_poster_bowl01.png");
-    //img_poster_sideText00 = loadImage("data/img_poster_sideText00.png");
+    img_poster_bowl01 = loadImage("data/img_poster_bowl01.png");
+    img_poster_sideText00 = loadImage("data/img_poster_sideText00.png");
 }
 
 
@@ -37,7 +37,7 @@ function setup() {
 
 function draw() {
     background(255, 128, 128);
-    image(img_poster_bowl00, 0, 0);
+    image(img_poster_sideText00, mouseX, -100);
     
     
     if(open_info){
