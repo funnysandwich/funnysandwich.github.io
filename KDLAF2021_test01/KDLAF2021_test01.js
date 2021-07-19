@@ -1,5 +1,6 @@
 var walls = [];
-var rays = [];
+var rays;
+var rayDetail;
 
 
 var PG;
@@ -70,6 +71,7 @@ function setup() {
   sideW = 268.0;
   scaleRate = (width-sideW)/img_bowl00.width;
   scrollVar = 0;
+  rayDetail = 90;
 
 
   img_sideText00.resize(sideW, sideW*img_sideText00.height/img_sideText00.width);
@@ -118,12 +120,20 @@ function setup() {
 
 
 
-  for (let i =0; i< 180; i++) {
-    rays[i] = new Ray(0, i);
+  //for (let i =0; i< rayDetail; i++) {
+  //  rays[0][i] = new Ray(0, i);
+  //}
+  rays = new Array(2);
+  for (let i=0; i<rays.length; i++) {
+    rays[i] = new Array(rayDetail);
+    let randomPos = createVector(random(width), random(height));
+    for (let j=0; j<rays[i].length; j++) {
+      rays[i][j] = new Ray(i, j, randomPos);
+    }
   }
 
 
-  open_info = false;
+  open_info = true;
 }
 
 
@@ -135,6 +145,7 @@ function draw() {
   if (open_info)  background(60);
   else  background(0);
 
+
   image(img_sideText00, width-img_sideText00.width, height-img_sideText00.height);
   image(img_bowl00, 0, height-((min(scaleRate, 0.88)*img_bowl00.height)/3.0*2), width-sideW, scaleRate*img_bowl00.height);
 
@@ -144,9 +155,11 @@ function draw() {
     PG.push();
     PG.translate(-width/2, -height/2);
     for (let i=0; i<rays.length; i++) {
-      let mouse = createVector(mouseX, mouseY);
-      rays[i].update(mouse);
-      rays[i].display();
+      for (let j=0; j<rays[i].length; j++) {
+        let mouse = createVector(mouseX, mouseY);
+        rays[i][j].update(mouse);
+        rays[i][j].display();
+      }
     }
     PG.pop();
     image(PG, 0, 0);
@@ -175,6 +188,11 @@ function draw() {
       vertex(node_walls_T[i].x, node_walls_T[i].y);
     }
     endShape(CLOSE);
+  }
+  
+  
+  if(rays.length>4){
+    rays.shift();
   }
 
 
@@ -222,10 +240,13 @@ function displayInfo() {
     walls[i].displayInfo();
   }
 
+
   for (let i=0; i<rays.length; i++) {
-    let mouse = createVector(mouseX, mouseY);
-    rays[i].update(mouse);
-    rays[i].displayInfo();
+    for (let j=0; j<rays[i].length; j++) {
+      let mouse = createVector(mouseX, mouseY);
+      rays[i][j].update(mouse);
+      rays[i][j].displayInfo();
+    }
   }
 }
 
@@ -247,6 +268,23 @@ function mouseWheel(event) {
   scrollVar = event.delta;
   //uncomment to block page scrolling
   //return false;
+}
+
+
+
+
+
+function mouseReleased() {
+
+  let newRays = new Array(rayDetail);
+  let randomPos = createVector(mouseX, mouseY);
+  //for (let j=0; j<newRays; j++) {
+  //  newRays[j] = new Ray(rays.length, j, randomPos);
+  //}
+  rays.push(newRays);
+  for(let j=0;j<rayDetail;j++){
+    rays[rays.length-1][j] = new Ray(rays.length, j, randomPos);
+  }
 }
 
 
@@ -345,17 +383,17 @@ function Wall(As, Bs) {
 
 
 
-function Ray(index_wichone, index) {
-  this.O = createVector(0, 0);
+function Ray(index_wichone, index, beignPos) {
+  this.O = createVector(beignPos.x, beignPos.y);
   this.P = createVector(0, 0);
   this.P2 = createVector(0, 0);
-  this.angle = map(index, 0, 180, 0, TWO_PI);
-  this.angle2 = map(index+1, 0, 180, 0, TWO_PI);
+  this.angle = map(index, 0, rayDetail, 0, TWO_PI);
+  this.angle2 = map(index+1, 0, rayDetail, 0, TWO_PI);
   this.wichone = index_wichone;
 
 
   this.update = function(newO) {
-    this.O = newO;
+    //this.O = newO;
 
     this.P = p5.Vector.fromAngle(this.angle);
     this.P.setMag(700);
@@ -381,13 +419,12 @@ function Ray(index_wichone, index) {
     PG.fill(255);
     PG.noStroke();
     PG.beginShape();
-    for (let i=0; i<img_light; i++) {
-      if (wichone == i) {
+    for (let i=0; i<img_light.length; i++) {
+      if (this.wichone%img_light.length == i) {
         PG.texture(img_light[i]); 
         break;
       }
     }
-    PG.texture(img_light[0]); 
     PG.vertex(this.O.x, this.O.y, uv_O.x, uv_O.y);
     PG.vertex(this.P.x, this.P.y, uv_P.x, uv_P.y);
     PG.vertex(this.P2.x, this.P2.y, uv_P2.x, uv_P2.y);
