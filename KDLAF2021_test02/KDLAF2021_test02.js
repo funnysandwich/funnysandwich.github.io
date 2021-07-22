@@ -155,7 +155,7 @@ function setup() {
 
 
 
-  open_info = true;
+  open_info = false;
 }
 
 
