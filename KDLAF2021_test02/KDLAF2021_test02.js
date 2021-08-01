@@ -111,7 +111,7 @@ function setup() {
   scaleRate = (width-sideW)/img_bowl00.width;
   scrollFlash = 0;
   scrollVar = 0;
-  rayDetail = 360;
+  rayDetail = 180;
   lightCount = 0;
   wait_side = 0;
   open_climax = false;
