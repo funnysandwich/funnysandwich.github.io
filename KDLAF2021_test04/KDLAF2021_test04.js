@@ -341,7 +341,7 @@ function setup() {
 
 
   //sound_0.autoplay(true);
-  open_info = false;
+  open_info = true;
 }
 
 
