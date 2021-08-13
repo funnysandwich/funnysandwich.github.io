@@ -422,6 +422,10 @@ function draw() {
       let d = map(min(time_loading % 180, 60), 0, 60, 0, 200);
       ellipse(width/2, height/2, d, d);
     }
+   
+   if(open_info){
+    displayInfo();
+   }
   } else {
 
     if (open_info)  background(60);
