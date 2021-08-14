@@ -393,7 +393,8 @@ function draw() {
     }
     let s_y02_loading = constrain(map(y02_loading/(v_loading*0.25), 0, y02_loading, y02_loading, (height-img_loading00.height)/2), y02_loading, (height-img_loading00.height)/2);
     let s_y01_loading = constrain(map(y01_loading/(v_loading*0.25), 0, y01_loading, y01_loading, (height-img_loading00.height)/2), y01_loading, (height-img_loading00.height)/2);
-    background(0);
+    if (open_info)  background(60);
+    else  background(0);
 
     push();
     if (v_loading == 1  &&  time_loading > 180) {
