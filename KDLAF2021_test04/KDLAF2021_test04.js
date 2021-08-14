@@ -113,6 +113,11 @@ let open_info;
 
 
 function preload() {
+  str_loading = createDiv("loading...");
+  str_loading.style('font-size', '16px');
+  str_loading.style('color', '#ffffff');
+  str_loading.position(windowWidth/2 - 28, windowHeight/2 + 94/2 +20);
+ 
   img_loading00 = loadImage("data/img_loading00.png");
   img_loading01 = loadImage("data/img_loading01.png");
   img_loading02 = loadImage("data/img_loading02.png");
