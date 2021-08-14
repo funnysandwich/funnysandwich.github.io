@@ -1052,6 +1052,8 @@ function displayInfo() {
   text("------------", 10, 290);
   text("open_climax: "+open_climax, 10, 305);
   text("time_climax: "+time_climax, 10, 320);
+  text("------------", 10, 335);
+  text("count_open_info: "+count_open_info, 10, 350);
 
   text("lightCount: "+lightCount, 220, 35);
   text("lightNum: "+lights.length, 220, 50);
