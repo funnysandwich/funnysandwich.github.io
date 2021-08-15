@@ -23,7 +23,7 @@ function draw() {
   text("y: "+y, 10, 25);
   text("mouseY: "+mouseY, 10, 40);
   text("pmouseY: "+pmouseY, 10, 55);
-  text(mouseY - pmouseY, 10, 70);
+  text("y2_flash: "+y2_flash, 10, 70);
   text("y2: "+y2, 10, 85);
 
 
