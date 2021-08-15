@@ -29,6 +29,7 @@ function draw() {
 
   image(img, 0, y2, windowWidth, windowWidth*(img.height/img.width));
   y2_flash += (0 - y2_flash) * 0.05;
+   y2 += y2_flash;
 }
 
 
@@ -37,5 +38,5 @@ function touchMoved() {
 
   y2_flash = mouseY - pmouseY;
 
-  y2 += y2_flash;
+ 
 }
