@@ -44,7 +44,7 @@ function draw() {
 
 function touchMoved(event) {
   y += movedY;
-  y3 = event.delta;
+  y3 = event.detail;
 
   y2_flash = mouseY - pmouseY;
 }
