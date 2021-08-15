@@ -34,7 +34,7 @@ function draw() {
     y2_flash += (0 - y2_flash) * 0.05;
     if (abs(y2_flash) < 0.1) y2_flash = 0;
   } else {
-    y2_flash = 0;
+    y2_flash =  mouseY - pmouseY;
   }
   y2 += y2_flash;
 }
@@ -42,7 +42,7 @@ function draw() {
 
 function touchMoved() {
   y += movedY;
-  y2_flash = mouseY - pmouseY;
+  //y2_flash = mouseY - pmouseY;
 }
 
 function touchStarted() {
