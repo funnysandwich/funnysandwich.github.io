@@ -1,6 +1,7 @@
 
 let y ;
 let y2, y2_flash;
+let y3;
 let img;
 let open_y2_flash_easing = true;
 
@@ -27,6 +28,7 @@ function draw() {
   text("y2_flash:"+y2_flash, 10, 70);
   text("y2: "+y2, 10, 85);
   text("open_y2_flash_easing: "+open_y2_flash_easing, 10, 100);
+  text("y3: "+y3, 10, 115);
 
 
   image(img, 0, y2, windowWidth, windowWidth*(img.height/img.width));
@@ -36,13 +38,13 @@ function draw() {
   } else {
     y2_flash = mouseY - pmouseY;
   }
-
   y2 += y2_flash;
 }
 
 
-function touchMoved() {
+function touchMoved(event) {
   y += movedY;
+  y3 = event.delta;
 
   y2_flash = mouseY - pmouseY;
 }
