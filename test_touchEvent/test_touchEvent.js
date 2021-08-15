@@ -29,7 +29,8 @@ function draw() {
 
   image(img, 0, y2, windowWidth, windowWidth*(img.height/img.width));
   y2_flash += (0 - y2_flash) * 0.05;
-   y2 += y2_flash;
+  if (abs(y2_flash) < 0.1) y2_flash = 0;
+  y2 += y2_flash;
 }
 
 
