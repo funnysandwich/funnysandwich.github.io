@@ -45,6 +45,9 @@
  在 test04 的基础上增加移动端的模式
  
  
+ 
+ 
+ 
  */
 
 
@@ -319,7 +322,8 @@ function displayInfo() {
 function keyPressed() {
   if (key === 'i' || key === 'I') {
     open_info = !open_info;
-    PG = createGraphics(600, floor(600.0/scaleWH)+150, WEBGL);
+    if (is_wLongerThanH)  PG = createGraphics(600, floor(600.0/scaleWH)+150, WEBGL);
+    else  PG = createGraphics(100, floor(100.0/scaleWH)+50, WEBGL);
     PG.textureMode(NORMAL);
     scalePG = float(width) / PG.width;
   }
@@ -390,7 +394,8 @@ function touchStarted()
   } else if (count_open_info==7 && mouseX>width-100 && mouseY>height-100) {
     count_open_info = 0;
     open_info = !open_info;
-    PG = createGraphics(600, floor(600.0/scaleWH)+150, WEBGL);
+    if (is_wLongerThanH)  PG = createGraphics(600, floor(600.0/scaleWH)+150, WEBGL);
+    else  PG = createGraphics(100, floor(100.0/scaleWH)+50, WEBGL);
     PG.textureMode(NORMAL);
     scalePG = float(width) / PG.width;
   } else {
@@ -407,7 +412,7 @@ function touchStarted()
       sound_0.rate(speed);
       sound_0.play();
 
-      sound_bkg.loop();
+      //sound_bkg.loop();
     }
   } else {
     if (scrollVar < beginY01 + height*0.25) {
@@ -684,8 +689,15 @@ function Light() {
     }
 
     this.time ++;
-    let pos_noise = createVector(map(noise(frameCount/100.0+this.ran), 0, 1, -2, 2), map(noise(frameCount/100.0+this.ran+999), 0, 1, -2, 2));
-    let pos_end = p5.Vector.sub(createVector((width-sideW)/2 *(1.0/scalePG), height *(1.0/scalePG)), this.pos).setMag(1);
+    let pos_noise;
+    let pos_end;
+    if (is_wLongerThanH) {
+      pos_noise = createVector(map(noise(frameCount/100.0+this.ran), 0, 1, -2, 2), map(noise(frameCount/100.0+this.ran+999), 0, 1, -2, 2));
+      pos_end = p5.Vector.sub(createVector((width-sideW)/2 *(1.0/scalePG), height *(1.0/scalePG)), this.pos).setMag(1);
+    } else {
+      pos_noise = createVector(map(noise(frameCount/100.0+this.ran), 0, 1, -0.75, 0.75), map(noise(frameCount/100.0+this.ran+999), 0, 1, -0.75, 0.75));
+      pos_end = p5.Vector.sub(createVector(width/2 *(1.0/scalePG), height *(1.0/scalePG)), this.pos).setMag(0.5);
+    }
     let pos_final = createVector();
     pos_final.x = lerp(pos_noise.x, pos_end.x, min(0.75, map(this.time, 0, 500, 0.0, 1.0)));
     pos_final.y = lerp(pos_noise.y, pos_end.y, min(0.75, map(this.time, 0, 500, 0.0, 1.0)));
