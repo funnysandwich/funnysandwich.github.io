@@ -38,7 +38,7 @@ function PHsetup() {
   PG = createGraphics(100, floor(100.0/scaleWH)+50, WEBGL);
   PG.textureMode(NORMAL);
   scalePG = float(width) / PG.width;
-  lightW = max(floor(230*scaleRate), 230) * (1.0/scalePG);
+  lightW = max(floor(400*scaleRate), 400) * (1.0/scalePG);
 
 
 
@@ -119,22 +119,22 @@ function PHsetup() {
   for (let i=0; i<node_walls_E_ori.length; i++) {
     xy = float(split(node_walls_E_ori[i], ','));
     node_walls_E[i] = createVector(xy[0], xy[1]);
-    node_walls_E[i].mult(scaleRate).add(width*0.559, height*0.042).mult(1.0/scalePG);
+    node_walls_E[i].mult(0.5).mult(scaleRate).add(width*0.559, height*0.042).mult(1.0/scalePG);
   }
   for (let i=0; i<node_walls_A_ori.length; i++) {
     xy = float(split(node_walls_A_ori[i], ','));
     node_walls_A[i] = createVector(xy[0], xy[1]);
-    node_walls_A[i].mult(scaleRate).add(width*0.127, height*0.228).mult(1.0/scalePG);
+    node_walls_A[i].mult(0.5).mult(scaleRate).add(width*0.127, height*0.228).mult(1.0/scalePG);
   }
   for (let i=0; i<node_walls_A2_ori.length; i++) {
     xy = float(split(node_walls_A2_ori[i], ','));
     node_walls_A2[i] = createVector(xy[0], xy[1]);
-    node_walls_A2[i].mult(scaleRate).add(width*0.127, height*0.228).mult(1.0/scalePG);
+    node_walls_A2[i].mult(0.5).mult(scaleRate).add(width*0.127, height*0.228).mult(1.0/scalePG);
   }
   for (let i=0; i<node_walls_T_ori.length; i++) {
     xy = float(split(node_walls_T_ori[i], ','));
     node_walls_T[i] = createVector(xy[0], xy[1]);
-    node_walls_T[i].mult(scaleRate).add(width*0.375, height*0.490).mult(1.0/scalePG);
+    node_walls_T[i].mult(0.5).mult(scaleRate).add(width*0.375, height*0.490).mult(1.0/scalePG);
   }
 
   for (let i=0; i<node_walls_E.length; i++) {
@@ -262,8 +262,8 @@ function PHdraw() {
     } else {
       scrollVar += scrollFlash;
     }
-    
-    if(scrollFlash != 0)  wait_side = 0;
+
+    if (scrollFlash != 0)  wait_side = 0;
 
 
     if (scrollVar<0)  scrollVar = 0;
@@ -430,7 +430,70 @@ function PHdraw() {
 
 
 
+      PG.background(255, 0);
+      //PG.clear();
+      PG.push();
+      PG.translate(-PG.width/2, -PG.height/2);
+      //PG.blendMode(EXCLUSION);
+      if (!open_info) {
+        for (let i=0; i<lights.length; i++) {
+          lights[i].display();
+        }
+      } else {
+        for (let i=0; i<lights.length; i++) {
+          lights[i].displayInfo();
+        }
+      }
+      //PG.blendMode(BLEND);
+      PG.pop();
+      
+      
+      
+      image(PG, 0, constrain(map(scrollVar, beginY01-beginY00, beginY01+height, 0, -200), -200, 0), width, ceil(width*(PG.height/PG.width)));
 
+
+
+     //-------------------------------- ⬇画EAT⬇ --------------------------------
+      if (!open_info) {
+        fill(0);
+        stroke(0);
+        strokeWeight(1);
+        beginShape();
+        for (let i=0; i<node_walls_E.length; i++) {
+          vertex(node_walls_E[i].x *scalePG, node_walls_E[i].y *scalePG);
+        }
+        endShape(CLOSE);
+        beginShape();
+        for (let i=0; i<node_walls_A.length; i++) {
+          vertex(node_walls_A[i].x *scalePG, node_walls_A[i].y *scalePG);
+        }
+        endShape(CLOSE);
+        beginShape();
+        for (let i=0; i<node_walls_A2.length; i++) {
+          vertex(node_walls_A2[i].x *scalePG, node_walls_A2[i].y *scalePG);
+        }
+        endShape(CLOSE);
+        beginShape();
+        for (let i=0; i<node_walls_T.length; i++) {
+          vertex(node_walls_T[i].x *scalePG, node_walls_T[i].y *scalePG);
+        }
+        endShape(CLOSE);
+
+        if (!open_climax) {
+          image(img_E, width*0.559, height*0.042, 88.799*scaleRate, 88.799*scaleRate*(img_E.height/img_E.width));
+          image(img_A, width*0.127, height*0.228, 114.359*scaleRate, 114.359*scaleRate*(img_A.height/img_A.width));
+          image(img_T, width*0.375, height*0.490, 95.846*scaleRate, 95.846*scaleRate*(img_T.height/img_T.width));
+        } else {
+          image(img_E, width*0.559, height*0.042+ random(height*0.01, height*0.025), 88.799*scaleRate, 88.799*scaleRate*(img_E.height/img_E.width));
+          image(img_A, width*0.127, height*0.228+ random(height*0.01, height*0.025), 114.359*scaleRate, 114.359*scaleRate*(img_A.height/img_A.width));
+          image(img_T, width*0.375, height*0.490+ random(height*0.01, height*0.025), 95.846*scaleRate, 95.846*scaleRate*(img_T.height/img_T.width));
+        }
+      } else {
+        for (let i=0; i<walls.length; i++) {
+          walls[i].displayInfo();
+        }
+      }
+      //-------------------------------- ⬆画EAT⬆ --------------------------------
 
 
 
