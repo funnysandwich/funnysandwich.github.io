@@ -208,13 +208,13 @@ function setup() {
 
   open_info = false;
   
-    a = createDiv("hahahahaha<br>hahaha<br>halalallalalalalalalallaaaaaaaaaaa");
-
-
-  a.position(100, 100);
-  a.style('width', '200');
-  a.style('height', '100');
-  a.style('background', '#ffffff');
+  a = createDiv("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>end");
+  a.position(0, 0);
+  a.style('color', '#ffffff');
+  //a.style('background', '#b8b8b8');
+  let sw = 100;
+  a.style('width', width.toString());
+  a.style('height', height.toString());
   a.style('overflow', 'scroll');
 }
 
