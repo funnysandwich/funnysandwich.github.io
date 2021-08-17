@@ -208,7 +208,7 @@ function setup() {
 
   open_info = false;
   
-    a = createDiv("hahahahaha<br>hahaha<br>halalallalalalalalalallaaaaaaaaaaa");
+    a = createDiv("<br>hahahahaha<br>hahaha<br>halalalaa");
 
   a.position(100, 100);
   a.style('width', '200');
