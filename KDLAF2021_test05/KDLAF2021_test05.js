@@ -489,7 +489,7 @@ function touchStarted()
       sound_0.rate(speed);
       sound_0.play();
 
-      //sound_bkg.loop();
+      sound_bkg.loop();
     }
   } else {
     if (scrollVar < beginY01 + height*0.25) {
