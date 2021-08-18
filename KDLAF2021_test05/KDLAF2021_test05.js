@@ -200,14 +200,6 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   canvas.position(0, 0);
 
-  if (is_wLongerThanH) {
-    PCsetup();
-  } else {
-    PHsetup();
-  }
-
-  open_info = false;
-
   let a_s = "";
   for (let i=0; i<height; i+=100) {
     a_s += "test<br>";
@@ -221,8 +213,16 @@ function setup() {
   //a.style('background', '#b8b8b8');
   a.style('width', (width).toString());
   a.style('height', height.toString());
-  a.style('overflowY', 'visible');
+  a.style('overflowY', 'scroll');
   //a.style('overflowX', 'hidden');
+
+  if (is_wLongerThanH) {
+    PCsetup();
+  } else {
+    PHsetup();
+  }
+
+  open_info = false;
 }
 
 
