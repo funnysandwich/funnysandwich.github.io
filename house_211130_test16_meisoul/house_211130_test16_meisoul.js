@@ -490,7 +490,7 @@ function setup() {
     EYE2.endShape();
   }
 
-  c_swirl = 230;
+  c_swirl = 255;
   SWIRL = createGraphics(200, 200);
   SWIRL.background(255);
   /*SWIRL.noStroke();
