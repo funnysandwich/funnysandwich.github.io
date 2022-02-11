@@ -136,8 +136,8 @@ const state_c_all = [
 
 
 function setup() {
-  canvas = createCanvas(500, 500, WEBGL);
-  //canvas = createCanvas(min(min(windowWidth, windowHeight), 1000), min(min(windowWidth, windowHeight, 1000)), WEBGL);
+  //canvas = createCanvas(500, 500, WEBGL);
+  canvas = createCanvas(min(min(windowWidth, windowHeight), 1000), min(min(windowWidth, windowHeight, 1000)), WEBGL);
   canvas.position((windowWidth-width)/2, (windowHeight-width)/2);
 
   scaleRate = 500.0/width;
