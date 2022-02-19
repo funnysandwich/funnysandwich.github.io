@@ -160,14 +160,14 @@ let have_first_click=false;
 
 
 
-// let song1, song2, song3;
-// let index_song = 0;
+let song1, song2, song3;
+let index_song = 0;
 
-// function preload() {
-//   song1 = loadSound('data/train_90.wav');
-//   song2 = loadSound('data/train_rain.wav');
-//   song3 = loadSound('data/train_alone.wav');
-// }
+function preload() {
+  song1 = loadSound('data/train_90.wav');
+  // song2 = loadSound('data/train_rain.wav');
+  // song3 = loadSound('data/train_alone.wav');
+}
 
 
 
@@ -191,7 +191,10 @@ function setup() {
 
 
 
-
+  //  for (let i=0; i<song.length; i++) {
+  //    song[i].loop();
+  //    song[i].pause();
+  //  }
 
 
 
@@ -1427,7 +1430,9 @@ document.onkeydown = function(event) {
 document.onclick = function (event) {
   let e = event || window.event;
 
-
+  if (!song1.isPlaying()) {
+    song1.loop();
+  }
 
 
   if (open_mountain) {
@@ -1501,23 +1506,26 @@ document.onclick = function (event) {
 
 function keyPressed() {
   if (key == ' ') {
-//     index_song += 1;
-//     if (index_song >= 3) {
-//       index_song = 0;
-//     }
-//     if (index_song == 0) {
-//       song1.loop();
-//       song2.pause();
-//       song3.pause();
-//     } else if (index_song == 1) {
-//       song1.pause();
-//       song2.loop();
-//       song3.pause();
-//     } else if (index_song == 2) {
-//       song1.pause();
-//       song2.pause();
-//       song3.loop();
-//     }
+    index_song += 1;
+    if (index_song >= 3) {
+      index_song = 0;
+    }
+    if (!song1.isPlaying()) {
+      song1.loop();
+    }
+    //if (index_song == 0) {
+    //  song1.loop();
+    //  song2.pause();
+    //  song3.pause();
+    //} else if (index_song == 1) {
+    //  song1.pause();
+    //  song2.loop();
+    //  song3.pause();
+    //} else if (index_song == 2) {
+    //  song1.pause();
+    //  song2.pause();
+    //  song3.loop();
+    //}
   } else if (key == 'w' || key == 'W') {
     state_winFrame += 1;
     if (state_winFrame >= WH_winFrame.length) {
