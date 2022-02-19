@@ -163,11 +163,11 @@ let have_first_click=false;
 //let song1, song2, song3;
 //let index_song = 0;
 
-function preload() {
+//function preload() {
   //song1 = loadSound('data/train_90.wav');
   //song2 = loadSound('data/train_rain.wav');
   //song3 = loadSound('data/train_alone.wav');
-}
+//}
 
 
 
