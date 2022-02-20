@@ -1312,7 +1312,7 @@ function draw() {
     }
     image(PG, -width/2, -height/2, width, height);
   } else {
-    var_loading = easing_x(var_loading, count_songs/totalSongs, 0.25);
+    var_loading =  easing_x(var_loading, max(0.1, count_songs/totalSongs), 0.25);
 
     background(c_winFrame);
     noFill();
