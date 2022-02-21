@@ -41,7 +41,7 @@ let roadHor = [];
 
 let open_info = false;
 let open_follow = false;
-let open_stop = false;
+let open_stop = true;
 let is_onTheGround = false;
 
 
@@ -227,7 +227,7 @@ function setup() {
   roY = 0;
   roX = 0;
   cameraY = -real(800);
-  speed = real(20);
+  speed = 0;
   mileage = 0;
   Y_shake = 0;
   beginLine = -real(3500);
