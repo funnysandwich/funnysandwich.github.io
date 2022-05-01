@@ -719,11 +719,11 @@ function displayInfo() {
   for (let i=0; i<open_info_wichFloor.length; i++) {
     if (open_info_wichFloor[i]) {
       if (lamp.state == 2  &&  i == open_info_wichFloor.length-1) {
-        let nodey = (screenPosition(lamp.node_up[0]).y + screenPosition(lamp.node_up[1]).y)/2.0 + height/2.0 + 100*scaleRate;
+        let nodey = (screenPosition(lamp.node_up[0]).y + screenPosition(lamp.node_up[1]).y)/2.0*scaleRate + 500/2.0 + 100.0;
         PG.text("node_up ("+nfc(lamp.node_up[1].x, 2)+", "+nfc(lamp.node_up[1].y, 2)+", "+nfc(lamp.node_up[1].z, 2)+")", 310, nodey);
         PG.text("node_down ("+nfc(lamp.node_up[0].x, 2)+", "+nfc(lamp.node_up[0].y, 2)+", "+nfc(lamp.node_up[0].z, 2)+")", 310, nodey+12);
       } else {
-        let nodey = (screenPosition(lamp.node[i]).y + screenPosition(lamp.node[i+1]).y)/2.0 + height/2.0 + 100*scaleRate;
+        let nodey = (screenPosition(lamp.node[i]).y + screenPosition(lamp.node[i+1]).y)/2.0*scaleRate + 500/2.0 + 100.0;
         PG.text("node_up ("+nfc(lamp.node[i+1].x, 2)+", "+nfc(lamp.node[i+1].y, 2)+", "+nfc(lamp.node[i+1].z, 2)+")", 310, nodey);
         PG.text("node_down ("+nfc(lamp.node[i].x, 2)+", "+nfc(lamp.node[i].y, 2)+", "+nfc(lamp.node[i].z, 2)+")", 310, nodey+12);
       }
