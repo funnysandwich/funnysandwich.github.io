@@ -705,11 +705,12 @@ function displayInfo() {
     PG.fill(128, 30, 30);
   }
   PG.text("Shine: "+lamp.open_shine, x, y+gap*10);
-  PG.text("SignNum: "+sign_num, x, y+gap*11);
-
-  if (lamp.open_shine) {
+   if (lamp.open_shine) {
     PG.fill(0, 128);
   }
+  PG.text("SignNum: "+sign_num, x, y+gap*11);
+
+
 
 
   PG.noStroke();
