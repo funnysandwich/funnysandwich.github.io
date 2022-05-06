@@ -72,8 +72,8 @@ function setup() {
 
   belt = new Belt();
  
- TEST = createGraphics(500,500);
-TEST.background(255,128,128);
+ TEST = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2);
+TEST.background(124, 155, 199);
 
 
   MESS = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2, WEBGL);
