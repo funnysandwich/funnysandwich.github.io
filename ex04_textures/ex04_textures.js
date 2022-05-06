@@ -20,6 +20,8 @@ function setup() {
   
   P = createGraphics(500,500);
   P.background(255,0,0);
+  P.fill(128,128,255);
+  P.ellipse(250,250,250,250);
   P.image(img,0,0,400,400);
 }
 
