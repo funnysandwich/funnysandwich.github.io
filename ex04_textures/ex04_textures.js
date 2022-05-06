@@ -33,8 +33,17 @@ function draw() {
   rotateZ(theta * 0.1);
   rotateX(theta * 0.1);
   rotateY(theta * 0.1);
+  
+  //box(100, 100, 100);
+  fill(255);
+  beginShape();
   texture(img);
-  box(100, 100, 100);
+  vertex(-100,-100,0,0,0);
+  vertex(100,-100,0,1,0);
+  vertex(100,100,0,1,1);
+  vertex(-100,100,0,0,1);
+  endShape(CLOSE);
+  fill(255);
   pop();
   theta += 0.05;
 }
