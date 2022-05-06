@@ -74,8 +74,9 @@ function setup() {
 
 
 
-  MESS = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2);
+  MESS = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2, WEBGL);
   MESS.background(124, 155, 199);
+ MESS.translate(-MESS.width/2,-MESS.height/2);
 
 
   mess = [];
@@ -96,6 +97,7 @@ function setup() {
 
   if (open_info) {
     MESS.clear();
+   
     let y = 0;
     for (let i=0; i<mess.length; i++) {
       mess[i].displayInfo(y);
