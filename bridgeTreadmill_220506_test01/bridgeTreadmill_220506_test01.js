@@ -8,7 +8,7 @@
 
 
 
-let canvas, PG, MESS;
+let canvas, PG, MESS, TEST;
 let scaleRate;
 let roY;
 
@@ -71,7 +71,9 @@ function setup() {
 
 
   belt = new Belt();
-
+ 
+ TEST = createGraphics(500,500);
+TEST.background(255,128,128);
 
 
   MESS = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2, WEBGL);
