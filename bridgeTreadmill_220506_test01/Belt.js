@@ -142,7 +142,7 @@ function Belt() {
     noStroke();
     fill(255);
     beginShape(TRIANGLES);
-    texture(MESS);
+    texture(TEST);
     for (let j=0; j<this.node[0].length; j++) {
       let y_D = 0;
       if (j < this.num_detail_single_arc) {
