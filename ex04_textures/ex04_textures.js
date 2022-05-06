@@ -9,6 +9,7 @@ let theta = 0;
 
 function setup() {
   createCanvas(710, 400, WEBGL);
+  textureMode(NORMAL);
 
   img = loadImage('data/cat.jpg');
   vid = createVideo(['data/360video_256crop_v2.mp4']);
