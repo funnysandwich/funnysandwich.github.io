@@ -6,6 +6,7 @@
 let img;
 let vid;
 let theta = 0;
+let P;
 
 function setup() {
   createCanvas(710, 400, WEBGL);
@@ -16,6 +17,10 @@ function setup() {
   vid.elt.muted = true;
   vid.loop();
   vid.hide();
+  
+  P = createGraphics(500,500);
+  P.background(255,0,0);
+  P.image(img,0,0,400,400);
 }
 
 function draw() {
@@ -38,7 +43,7 @@ function draw() {
   //box(100, 100, 100);
   fill(255);
   beginShape();
-  texture(img);
+  texture(P);
   vertex(-100,-100,0,0,0);
   vertex(100,-100,0,1,0);
   vertex(100,100,0,1,1);
