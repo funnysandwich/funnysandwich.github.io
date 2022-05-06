@@ -74,7 +74,7 @@ function setup() {
  
  const PW = 375;
  const PH = (round(375/width * height)*2 + round(belt.W_fillet*PI))*2;
- TEST = createGraphics(PW, PH);
+ TEST = createGraphics(floor(PW/2), floor(PH/2));
 TEST.background(124, 155, 199);
 
 
