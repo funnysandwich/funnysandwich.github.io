@@ -72,7 +72,9 @@ function setup() {
 
   belt = new Belt();
  
- TEST = createGraphics(375, (round(375/width * height)*2 + round(belt.W_fillet*PI))*2);
+ const PW = 375;
+ const PH = (round(375/width * height)*2 + round(belt.W_fillet*PI))*2;
+ TEST = createGraphics(PW, PH);
 TEST.background(124, 155, 199);
 
 
