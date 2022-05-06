@@ -23,7 +23,7 @@ let belt, mess;
 
 
 
-let open_info = false;
+let open_info = true;
 let open_follow = false;
 let open_roll = true;
 let have_touch = false;
