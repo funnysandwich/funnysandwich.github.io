@@ -30,6 +30,28 @@ let belt, mess;
 
 
 
+let state_color;
+const c_bkg = [
+  ["#7c9bc7", "#85e249", "#ffffff"], 
+  ["#1a1a1a", "#6de67a", "#2a2a2a"], 
+  ["#000000", "#3268ff", "#303030"], 
+  ["#d0d9e2", "#e2fdca", "#ffffff"], 
+  ["#161e24", "#466b93", "#273340"], 
+  ["#ebebeb", "#a3e26a", "#ffffff"], 
+  ["#000000", "#1d9bf0", "#2f3336"], 
+  ["#ffffff", "#efefef", "#dbdbdb"], 
+  ["#000000", "#7c40eb", "#262626"], 
+  ["#ffffff", "#1c9afc", "#dcdcdc"], 
+  ["#d8dce4", "#37445d", "#ffffff"]
+];
+
+let c_info;
+
+
+
+let state_fillet;
+
+
 
 
 
@@ -37,6 +59,9 @@ let open_info = false;
 let open_follow = false;
 let open_roll = true;
 let have_touch = false;
+
+
+let time_touch;
 
 
 
@@ -55,7 +80,27 @@ function setup() {
   canvas.position((windowWidth-width)/2, (windowHeight-height)/2);
   canvas.mouseOver(over);
   canvas.mouseOut(out);
-  document.bgColor = "black";
+
+
+
+  state_color = floor(random(0, c_bkg.length));
+  c_info = color(255);
+  if (state_color == 3  ||  state_color == 5  ||  state_color == 7 ||  state_color == 9 ||  state_color == 10) {
+    c_info = color(0);
+  }
+
+
+
+  state_fillet = floor(random(0, 3));
+
+
+
+
+  document.bgColor = c_bkg[state_color][0];
+
+
+
+
 
   scaleRate = 500.0/width;
   PG = createGraphics(500, round(500/width * height));
@@ -73,6 +118,7 @@ function setup() {
 
 
   roY = 0;
+  time_touch = 0;
 
 
 
@@ -88,7 +134,7 @@ function setup() {
   M = createImage(MESS.width, MESS.height);
   M_info = createImage(MESS.width, MESS.height);
 
-  MESS.background(124, 155, 199);
+  MESS.background(c_bkg[state_color][0]);
 
 
 
@@ -123,7 +169,7 @@ function setup() {
     //MESS.rect(0, y, MESS.width, mess[i].H_all);
     MESS.textSize(12);
     MESS.noStroke();
-    MESS.fill(90);
+    MESS.fill(128);
     if (mess[i].is_I) {
       MESS.text(nf(i, 2), MESS.width-40, y+25);
     } else {
@@ -142,7 +188,7 @@ function setup() {
     //MESS.rect(0, y, MESS.width, mess[i].H_all);
     MESS.textSize(12);
     MESS.noStroke();
-    MESS.fill(90);
+    MESS.fill(128);
     if (mess[i].is_I) {
       MESS.text(nf(i, 2), MESS.width-40, y+25);
     } else {
@@ -165,7 +211,7 @@ function setup() {
 
 
 
-  MESS.background(124, 155, 199);
+  MESS.background(c_bkg[state_color][0]);
   y = 0;
   for (let i=0; i<mess.length; i++) {
     mess[i].display(y, MESS);
@@ -213,9 +259,10 @@ function draw() {
 
   if (touches.length == 1) {
     have_touch = true;
+    time_touch ++;
   }
   //background(255);
-  background(0);
+  background(c_bkg[state_color][0]);
   //push();
 
   if (open_follow) {
@@ -235,7 +282,9 @@ function draw() {
 
 
 
-
+  if (time_touch == 30) {
+    open_info = !open_info;
+  }
 
 
 
@@ -254,7 +303,7 @@ function draw() {
     PG.clear();
 
     displayInfo();
-    displayInfo_true();
+    // displayInfo_true();
     image(PG, -width/2, -height/2, width, height);
   }
 }
@@ -282,29 +331,45 @@ function displayInfo_3d() {
 
 
 function displayInfo() {
+  const x = 30;
+  const y = 36;
+  const gap = 18;
   PG.noStroke();
-  if (mouseX*scaleRate<17) {
-    PG.textAlign(CENTER);
-    PG.fill(255, 160);
-    PG.textSize(10);
-    PG.push();
-    PG.rotate(-HALF_PI);
-    PG.translate(-PG.height/2, 16);
-    PG.text("LittleHouse_01_a", 0, 0);
-    PG.pop();
-    PG.noStroke();
-  }
-  if (mouseY*scaleRate>height*scaleRate-17) {
-    PG.textAlign(CENTER);
-    PG.textSize(10);
-    PG.fill(255, 160);
-    PG.text("@funnysandwich 2021.09.13", PG.width/2, PG.height-8);
-  } else if (mouseY*scaleRate<17) {
-    PG.textAlign(CENTER);
-    PG.textSize(10);
-    PG.fill(255, 160);
-    PG.text("fps: "+nfc(frameRate(), 1)+"/30", PG.width/2, 16);
-  }
+  PG.fill(colorWithAlpha(c_info, 128));
+  PG.textAlign(LEFT);
+  PG.textSize(12);
+  PG.text("Canvas: "+width+", "+height, x, y+gap*0);
+  PG.text("Screen: "+M.width+", "+M.height, x, y+gap*1);
+  PG.text("ColorMode: "+state_color, x, y+gap*2);
+  PG.text("FilletMode: "+state_fillet, x, y+gap*3);
+  PG.text("Num_Message: "+mess.length, x, y+gap*4);
+  PG.text("Speed: "+nfc(belt.speed*100*5, 2)+"/10.00", x, y+gap*5);
+  PG.text("Rotate: "+nfc(roY, 2), x, y+gap*6);
+
+
+  PG.noStroke();
+  //if (mouseX*scaleRate<25) {
+  PG.textAlign(CENTER);
+  PG.fill(colorWithAlpha(c_info, 160));
+  PG.textSize(15);
+  PG.push();
+  PG.rotate(-HALF_PI);
+  PG.translate(-PG.height/2, 20);
+  PG.text("Bridge_Treadmill_a", 0, 0);
+  PG.pop();
+  PG.noStroke();
+  //}
+  //if (mouseY*scaleRate>height*scaleRate-25) {
+  PG.textAlign(CENTER);
+  PG.textSize(15);
+  PG.fill(colorWithAlpha(c_info, 160));
+  PG.text("@funnysandwich 2022.05.07", PG.width/2, PG.height-12);
+  //} else if (mouseY*scaleRate<25) {
+  PG.textAlign(CENTER);
+  PG.textSize(15);
+  PG.fill(colorWithAlpha(c_info, 160));
+  PG.text("fps: "+nfc(frameRate(), 1)+"/30", PG.width/2, 20);
+  // }
 }
 function displayInfo_true() {
   PG.fill(0, 100);
@@ -322,6 +387,13 @@ function displayInfo_true() {
   PG.text("have_touch: "+have_touch, 10, 110);
   //PG.noStroke();
   //PG.image(MESS, PG.width-10-50, 20, 50, 50/MESS.width*MESS.height);
+}
+
+
+
+function colorWithAlpha(c, alpha) {
+  let c_new = color(red(c), green(c), blue(c), alpha);
+  return c_new;
 }
 
 
@@ -626,6 +698,7 @@ document.onclick = function (event) {
 function touchEnded() {
   if (have_touch) {
     open_follow = false;
+    time_touch = 0;
   }
 }
 function touchStarted() {
@@ -634,9 +707,15 @@ function touchStarted() {
   }
 }
 
+function touchMoved() {
+  time_touch = 0;
+}
+
 function keyPressed() {
   if (key == ' ') {
     //noLoop();
     open_roll = !open_roll;
+  } else if (key == 's'  ||  key == 'S') {
+    save("BT.jpg");
   }
 }
