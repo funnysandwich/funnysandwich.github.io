@@ -5,6 +5,7 @@ function Belt() {
   this.W_fillet = floor(width*0.25);
   this.count = 0;
   this.time = 0.5;
+  this.spees = 0.2;
 
 
   this.node = Array.from(Array(2), () => new Array(this.num_detail_single_arc * 2));
@@ -67,10 +68,12 @@ function Belt() {
       this.count ++;
       this.count = this.count % 100;
       if (this.count < 3) {
-        this.time -= map(sin(map(this.count, 0, 3, 0, HALF_PI)), 0, 1, 0.0025, 0.02);
+        this.speed = map(sin(map(this.count, 0, 3, 0, HALF_PI)), 0, 1, 0.0025, 0.02);
       } else {
-        this.time -= map(cos(map(this.count, 5, 100, HALF_PI, PI)), 0, -1, 0.02, 0.0025);
+        this.speed = map(cos(map(this.count, 5, 100, HALF_PI, PI)), 0, -1, 0.02, 0.0025);
       }
+
+      this.time -= this.speed;
     } else {
       this.count = 0;
     }
@@ -139,6 +142,7 @@ function Belt() {
 
 
   this.display = function() {
+    let c1, c2;
     noStroke();
     fill(255);
     beginShape(TRIANGLES);
@@ -187,23 +191,46 @@ function Belt() {
     fill(128);
     for (let i=0; i<2; i++) {
       for (let j=0; j<this.node_wheel[0].length; j++) {
-        TRIANGLES_getRect(this.node_wheel[i*2][j], this.node_wheel[i*2+1][j], this.node_wheel[i*2+1][(j+1)%this.node_wheel[0].length], this.node_wheel[i*2][(j+1)%this.node_wheel[0].length]);
+        if (i == 0) {
+          c1 = color(128);
+          c2 = color(100);
+        } else if (i == 1) {
+          c2 = color(128);
+          c1 = color(100);
+        }
+
+        TRIANGLES_getRect_fill4(this.node_wheel[i*2][j], this.node_wheel[i*2+1][j], this.node_wheel[i*2+1][(j+1)%this.node_wheel[0].length], this.node_wheel[i*2][(j+1)%this.node_wheel[0].length], c1, c2, c2, c1);
       }
     }
 
     fill(100);
     for (let i=0; i<this.node_wheel.length; i++) {
+      if (i == 0 || i == 3) {
+        fill(100);
+      } else {
+        fill(75);
+      }
+
       for (let j=1; j<this.node_wheel[i].length-1; j++) {
         TRIANGLES_getTriangle(this.node_wheel[i][0], this.node_wheel[i][j], this.node_wheel[i][j+1]);
       }
     }
 
-    fill(100);
+    fill(128);
     for (let j=0; j<this.node[0].length; j++) {
-      TRIANGLES_getLine_weightToL(this.node[0][j], this.node[0][(j+1)%this.node[0].length], real(2));
+      if (roY > -1.0) {
+        TRIANGLES_getLine_weightToL(this.node[0][j], this.node[0][(j+1)%this.node[0].length], real(2));
+      } else {
+        TRIANGLES_getLine_weight(this.node[0][j], this.node[0][(j+1)%this.node[0].length], real(4));
+      }
     }
+    fill(100);
     for (let j=0; j<this.node[1].length; j++) {
-      TRIANGLES_getLine_weightToR(this.node[1][j], this.node[1][(j+1)%this.node[1].length], real(2));
+      if (roY < 1.0) {
+        TRIANGLES_getLine_weightToR(this.node[1][j], this.node[1][(j+1)%this.node[1].length], real(2));
+      } else {
+        TRIANGLES_getLine_weight(this.node[1][j], this.node[1][(j+1)%this.node[1].length], real(4));
+      }
     }
     endShape();
 
@@ -272,6 +299,12 @@ function Belt() {
       LINES_getLine(n1, n2);
       LINES_getLine(n3, n4);
     }
+
+
+
+
+
+
 
     endShape();
 
