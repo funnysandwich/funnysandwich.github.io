@@ -18,7 +18,13 @@ function Mess(H_limit) {
   this.H_all = this.H + this.gap;
 
   this.is_I = random(1) < 0.5;
+
   this.W_fillet = 15;
+  if (state_fillet == 1) {
+    this.W_fillet = 3.5;
+  } else if (state_fillet == 2) {
+    this.W_fillet = 12;
+  }
   this.num_detail_single_arc = 4;
 
 
@@ -60,23 +66,51 @@ function Mess(H_limit) {
 
 
 
+  if (state_fillet == 0) {
+    this.node_tick = new Array(7);
+    this.node_tick[0] = createVector(0, 0);
+    this.node_tick[1] = createVector(6.264, 0.376);
+    this.node_tick[2] = createVector(11.187, -0.91);
+    this.node_tick[3] = createVector(15.122, -3.916);
+    this.node_tick[4] = createVector(14.046, 1.238);
+    this.node_tick[5] = createVector(11.545, 4.838);
+    this.node_tick[6] = createVector(-2.103, 9.242);
 
-  this.node_tick = new Array(7);
-  this.node_tick[0] = createVector(0, 0);
-  this.node_tick[1] = createVector(6.264, 0.376);
-  this.node_tick[2] = createVector(11.187, -0.91);
-  this.node_tick[3] = createVector(15.122, -3.916);
-  this.node_tick[4] = createVector(14.046, 1.238);
-  this.node_tick[5] = createVector(11.545, 4.838);
-  this.node_tick[6] = createVector(-2.103, 9.242);
+    for (let i=0; i<this.node_tick.length; i++) {
+      if (this.is_I) {
+        this.node_tick[i].add(M.width - 17.329, this.gap/2.0+3.916);
+      } else {
+        this.node_tick[i].x *= -1;
+        this.node_tick[i].add(17.329, this.gap/2.0+3.916);
+      }
+    }
+  } else if (state_fillet == 1) {
+    this.node_tick = new Array(3);
+    this.node_tick[0] = createVector(0, 0);
+    this.node_tick[1] = createVector(-4.439, -4.083);
+    this.node_tick[2] = createVector(-4.439, 4.083);
 
+    for (let i=0; i<this.node_tick.length; i++) {
+      if (this.is_I) {
+        this.node_tick[i].add(M.width - 3.6, this.gap/2.0+16.734);
+      } else {
+        this.node_tick[i].x *= -1;
+        this.node_tick[i].add(3.6, this.gap/2.0+16.734);
+      }
+    }
+  } else if (state_fillet == 2) {
+    this.node_tick = new Array(3);
+    this.node_tick[0] = createVector(0, 0);
+    this.node_tick[1] = createVector(-17, 0);
+    this.node_tick[2] = createVector(0, -17);
 
-  for (let i=0; i<this.node_tick.length; i++) {
-    if (this.is_I) {
-      this.node_tick[i].add(M.width - 17.329, this.gap/2.0+3.916);
-    } else {
-      this.node_tick[i].x *= -1;
-      this.node_tick[i].add(17.329, this.gap/2.0+3.916);
+    for (let i=0; i<this.node_tick.length; i++) {
+      if (this.is_I) {
+        this.node_tick[i].add(M.width - 8, this.gap/2.0+this.H);
+      } else {
+        this.node_tick[i].x *= -1;
+        this.node_tick[i].add(8, this.gap/2.0+this.H);
+      }
     }
   }
 
@@ -94,9 +128,14 @@ function Mess(H_limit) {
   this.display = function(y, MESS) {
     MESS.noStroke();
     if (this.is_I) {
-      MESS.fill(133, 226, 73);
+      MESS.fill(c_bkg[state_color][1]);
     } else {
-      MESS.fill(255);
+      MESS.fill(c_bkg[state_color][2]);
+      if (state_color == 7) {
+        MESS.fill(255); 
+        MESS.stroke(c_bkg[state_color][2]);
+        MESS.strokeWeight(3);
+      }
     }
     //MESS.beginShape(TRIANGLES);
     //for (let i=1; i<this.node.length-1; i++) {
@@ -116,6 +155,25 @@ function Mess(H_limit) {
       MESS.vertex(this.node_tick[i].x, this.node_tick[i].y + y);
     }
     MESS.endShape(CLOSE);
+
+
+
+    if (state_color == 7) {
+      if (!this.is_I) {
+        MESS.noStroke();
+        MESS.fill(255);
+        MESS.beginShape();
+        for (let i=0; i<this.node.length; i++) {
+          MESS.vertex(this.node[i].x, this.node[i].y + y);
+        }
+        MESS.endShape(CLOSE);
+        MESS.beginShape();
+        for (let i=0; i<this.node_tick.length; i++) {
+          MESS.vertex(this.node_tick[i].x, this.node_tick[i].y + y);
+        }
+        MESS.endShape(CLOSE);
+      }
+    }
   };
 
 
@@ -131,9 +189,11 @@ function Mess(H_limit) {
       MESS.vertex(this.node[(i+1)%this.node.length].x, this.node[(i+1)%this.node.length].y + y);
     }
 
-    for (let i=0; i<this.node_tick.length-1; i++) {
-      MESS.vertex(this.node_tick[i].x, this.node_tick[i].y + y);
-      MESS.vertex(this.node_tick[(i+1)%this.node_tick.length].x, this.node_tick[(i+1)%this.node_tick.length].y + y);
+    for (let i=0; i<this.node_tick.length; i++) {
+      if (state_fillet != 0  ||  i !=this.node_tick.length-1) {
+        MESS.vertex(this.node_tick[i].x, this.node_tick[i].y + y);
+        MESS.vertex(this.node_tick[(i+1)%this.node_tick.length].x, this.node_tick[(i+1)%this.node_tick.length].y + y);
+      }
     }
     MESS.endShape();
   };
