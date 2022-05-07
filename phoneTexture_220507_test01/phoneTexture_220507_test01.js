@@ -8,7 +8,7 @@ function setup() {
 
   for (let i=0; i<P.length; i++) {
     P[i] = createGraphics(375*(i*2+1), 375*(i+1)*2);
-    P[i].background(255);
+    P[i].background(128);
     P[i].fill(255, 0, 0);
     P[i].ellipse(P[i].width/2, P[i].height/2, 300, 300);
   }
