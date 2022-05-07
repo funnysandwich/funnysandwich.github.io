@@ -8,17 +8,19 @@ function setup() {
   INFO.fill(0);
   INFO.noStroke();
   for (let i=0; i<5; i++) {
-    let w = floor(map(i, 0, P.length, 1800, 2500));
+    let w = floor(map(i, 0, P.length, 1800, 2300));
+    let h = 375*5;
     let center_x = map(i, 0, P.length-1, -200, 200)+250;
-    INFO.text("i:"+i+", "+nfc(w, 2), center_x-40, 300);
+    INFO.text("i: "+i+"\nw: "+w+"\nh: "+h, center_x-40, 300);
   }
 
   textureMode(NORMAL);
 
   for (let i=0; i<P.length; i++) {
-    let w = floor(map(i, 0, P.length, 1800, 2500));
-    P[i] = createGraphics(w, 375*5);
-    P[i].background(160, 60, 0);
+    let w = floor(map(i, 0, P.length, 1800, 2300));
+    let h = 375*5;    
+    P[i] = createGraphics(w, h);
+    P[i].background(128, 128, 255);
     P[i].fill(255, 0, 0);
     P[i].ellipse(P[i].width/2, P[i].height/2, 300, 300);
   }
