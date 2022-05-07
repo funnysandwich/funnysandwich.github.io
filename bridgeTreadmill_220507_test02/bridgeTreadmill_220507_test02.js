@@ -152,14 +152,14 @@ function setup() {
   }
 
 
-  M_info.loadPixels();
-  for (let j = 0; j < M_info.width; j++) {
-    for (let k = 0; k < M_info.height; k++) {
-      M_info.set(j, k, MESS.get(j, k));
-    }
-  }
-  M_info.updatePixels();
-
+  //M_info.loadPixels();
+  //for (let j = 0; j < M_info.width; j++) {
+  //  for (let k = 0; k < M_info.height; k++) {
+  //    M_info.set(j, k, MESS.get(j, k));
+  //  }
+  //}
+  //M_info.updatePixels();
+  M_info.copy(MESS, 0, 0, MESS.width, MESS.height, 0, 0, MESS.width, MESS.height);
 
 
 
@@ -179,13 +179,15 @@ function setup() {
 
 
 
-  M.loadPixels();
-  for (let j = 0; j < M.width; j++) {
-    for (let k = 0; k < M.height; k++) {
-      M.set(j, k, MESS.get(j, k));
-    }
-  }
-  M.updatePixels();
+  //M.loadPixels();
+  //for (let j = 0; j < M.width; j++) {
+  //  for (let k = 0; k < M.height; k++) {
+  //    M.set(j, k, MESS.get(j, k));
+  //  }
+  //}
+  //M.updatePixels();
+
+  M.copy(MESS, 0, 0, MESS.width, MESS.height, 0, 0, MESS.width, MESS.height);
 }
 
 function over() {
@@ -195,7 +197,6 @@ function over() {
 function out() {
   open_follow = false;
 }
-
 
 
 
