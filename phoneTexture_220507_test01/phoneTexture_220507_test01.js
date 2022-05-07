@@ -7,9 +7,9 @@ function setup() {
   textureMode(NORMAL);
 
   for (let i=0; i<P.length; i++) {
-    P[i] = createGraphics(375, 375*(i*4+1));
+    P[i] = createGraphics(375, 375*(i*3+1));
     P[i].background(0, 0, 255);
-    P[i].fill(255, 128, 128);
+    P[i].fill(255, 0, 0);
     P[i].ellipse(P[i].width/2, P[i].height/2, 300, 300);
   }
 }
