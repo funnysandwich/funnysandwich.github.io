@@ -478,8 +478,7 @@ function planeLoaded(str_plane) {
 function draw() {
   if (touches.length != 0) {
     is_phone = true;
-
-}
+  }
 
 
   background(c_bkg);
@@ -658,6 +657,7 @@ function draw() {
     if (click_time == 10) {
       click_time = 0;
       click_num = 0;
+      print("done");
     }
   } else if (click_num >= 2) {
     click_time = 0;
@@ -674,8 +674,6 @@ function draw() {
   } else {
     time_info = 0;
   }
-  
-
 }
 
 
@@ -889,7 +887,8 @@ function displayInfo() {
     PG.textSize(10);
     PG.fill(0, 160);
     PG.text("@funnysandwich 2022.05.01", PG.width/2, PG.height-8);
-  } else if (mouseY*scaleRate<17  ||  is_phone) {
+  } 
+  if (mouseY*scaleRate<17  ||  is_phone) {
     PG.textAlign(CENTER);
     PG.textSize(10);
     PG.fill(0, 160);
@@ -1122,6 +1121,16 @@ function touchEnded() {
 }
 
 
+function touchStarted() {
+  if (is_phone) {
+    click_num ++;
+    if (click_num == 2) {
+      open_info = !open_info;
+    }
+  } 
+  return false;
+}
+
 
 
 
@@ -1137,11 +1146,6 @@ document.onclick = function (event) {
   let e = event || window.event;
   if (!is_phone) {
     change();
-  } else {
-    click_num ++;
-    if (click_num == 2) {
-      open_info = !open_info;
-    }
   }
 };
 
