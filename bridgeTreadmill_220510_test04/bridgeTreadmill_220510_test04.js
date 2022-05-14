@@ -789,15 +789,18 @@ function touchEnded() {
     open_follow = false;
     time_touch = 0;
   }
+ return false;
 }
 function touchStarted() {
   if (have_touch) {
     open_follow = true;
   }
+ return false;
 }
 
 function touchMoved() {
   time_touch = 0;
+ return false;
 }
 
 function keyPressed() {
