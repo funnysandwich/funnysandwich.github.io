@@ -94,7 +94,7 @@ function setup() {
     W = round(H*0.75);
   }
   //canvas = createCanvas(500, 500, WEBGL);
-  canvas = createCanvas(W, H, WEBGL);
+  canvas = createCanvas(W, W, WEBGL);
   canvas.position((windowWidth-width)/2, (windowHeight-height)/2);
   canvas.mouseOver(over);
   canvas.mouseOut(out);
