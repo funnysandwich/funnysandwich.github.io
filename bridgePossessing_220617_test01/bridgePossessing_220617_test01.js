@@ -70,6 +70,8 @@ function draw() {
   if (touches.length == 1) {
     is_phone = true;
     time_touch ++;
+  }else{
+    time_touch = 0; 
   }
 
   if (time_touch == 30) {
