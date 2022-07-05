@@ -1,0 +1,65 @@
+{
+  "mainVar": {
+    "split01": {
+      "window": 0,
+      "frame": 0,
+      "color": 0
+    },
+    "split02": {
+      "landscape": 0,
+      "house": {
+        "house_normal": 1,
+        "house_construction": 0,
+        "house_cat": 0,
+        "house_castle": 0,
+        "house_firewatch": 0,
+        "house_block": 0,
+        "house_dotted": 0,
+        "house_orient": 0,
+        "house_underground": 0
+      },
+      "arrange": 0,
+      "street": {
+        "street_metro": 0,
+        "street_river": 0,
+        "street_nightMarket": 0
+      }
+    },
+    "split03": {
+      "part": {
+        "part_roof": 1,
+        "part_handrail": 1,
+        "part_crucifix": 1,
+        "part_bill_roof": 1,
+        "part_bill": 1,
+        "part_ladder": 1
+      },
+      "bill": {
+        "bill_mc": 0,
+        "bill_youbetu": 0,
+        "bill_tezos": 0,
+        "bill_bitcoin": 0,
+        "bill_ethereum": 0,
+        "bill_message": 0,
+        "bill_like": 0,
+        "bill_return": 0,
+        "bill_call": 0,
+        "bill_power": 0,
+        "bill_metro": 0,
+        "bill_file": 0,
+        "bill_telegram": 0,
+        "bill_park": 0,
+        "bill_fair": 0,
+        "bill_tree": 1,
+        "bill_deadTree": 1,
+        "bill_gazebo": 1,
+        "bill_paifang": 1,
+        "bill_tower": 1
+      }
+    },
+    "split04": {
+      "weather": " ",
+      "button": " "
+    }
+  }
+}
