@@ -1,0 +1,37 @@
+{
+  "mainVar": {
+    "split01": {
+      "window": 0,
+      "frame": 0,
+      "color": 0
+    },
+    "split02": {
+      "landscape": 1,
+      "house": {
+        "house_normal": 1,
+        "house_construction": 0,
+        "house_cat": 1,
+        "house_castle": 0,
+        "house_firewatch": 0,
+        "house_block": 0,
+        "house_dotted": 0,
+        "house_orient": 0,
+        "house_underground": 0
+      },
+      "arrange": 2,
+      "street": {
+        "street_metro": 0,
+        "street_river": 0.3,
+        "street_nightMarket": 0
+      }
+    },
+    "split03": {
+      "part": " ",
+      "bill": " "
+    },
+    "split04": {
+      "weather": " ",
+      "button": " "
+    }
+  }
+}
