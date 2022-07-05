@@ -1,0 +1,23 @@
+{
+  "mainVar": {
+    "split01": {
+      "window": 0,
+      "frame": 2,
+      "color": 1
+    },
+    "split02": {
+      "landscape": " ",
+      "house": " ",
+      "arrange": " ",
+      "street": " "
+    },
+    "split03": {
+      "part": " ",
+      "bill": " "
+    },
+    "split04": {
+      "weather": " ",
+      "button": " "
+    }
+  }
+}
