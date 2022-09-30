@@ -298,7 +298,7 @@ let div;
 
 let data = {};
 function preload() {
-  data = loadJSON('/data/attribute.json');
+  data = loadJSON('./data/attribute.json');
   //node_BT = loadStrings('/node_bt.txt');
 }
 
