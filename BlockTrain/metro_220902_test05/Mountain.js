@@ -1,6 +1,6 @@
 function Mountain() {
   this.ran = random(-999, 999);
-  this.deadLine = endLine + real(1000);
+  this.deadLine = endLine + gap_block*5;//real(1000);
 
   this.house = [];
   this.house_in_which_node = [];
@@ -18,9 +18,9 @@ function Mountain() {
       if (i != 0) {
         x += random(-(this.deadLine-beginLine)/this.node_behind[i].length*0.45, (this.deadLine-beginLine)/this.node_behind[i].length*0.45);
       }
-      let z = map(i, 0, this.node_behind.length-1, skyline.z+(real(500)+gap_block), skyline.z);
+      let z = map(i, 0, this.node_behind.length-1, skyline.z+(real(500)+gap_block_ver), skyline.z);
       if (i != this.node_behind.length-1) {
-        z += random(-(real(500)+gap_block)/2.0*0.25, (real(500)+gap_block)/2.0*0.25);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, (real(500)+gap_block_ver)/2.0*0.25);
       } else {
         z -= real(250);
       }
@@ -47,9 +47,9 @@ function Mountain() {
       if (i != 0) {
         x += random(-(this.deadLine-beginLine)/this.node_middle[i].length*0.45, (this.deadLine-beginLine)/this.node_middle[i].length*0.45);
       }
-      let z = map(i, 0, this.node_middle.length-1, skyline.z+(real(500)+gap_block)*2, skyline.z+(real(500)+gap_block));
+      let z = map(i, 0, this.node_middle.length-1, skyline.z+(real(500)+gap_block_ver)*2, skyline.z+(real(500)+gap_block_ver));
       if (i != this.node_middle.length-1) {
-        z += random(-(real(500)+gap_block)/2.0*0.25, 0);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, 0);
       }
       let y = skyline.y;
       if (i == 1) {
@@ -75,10 +75,10 @@ function Mountain() {
       if (i != 0) {
         x += random(-(this.deadLine-beginLine) / (this.node_front[0].length+1)*0.45, (this.deadLine-beginLine) / (this.node_front[0].length+1)*0.45);
       }
-      let z = map(i, 0, this.node_front.length-1, skyline.z+(real(500)+gap_block)*3, skyline.z+(real(500)+gap_block)*2);
-      z -= gap_block+real(150);
+      let z = map(i, 0, this.node_front.length-1, skyline.z+(real(500)+gap_block_ver)*3, skyline.z+(real(500)+gap_block_ver)*2);
+      z -= gap_block_ver+real(150);
       if (i != this.node_front.length-1) {
-        z += random(-(real(500)+gap_block)/2.0*0.25, 0);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, 0);
       } else {
         z -= real(250);
       }
@@ -94,7 +94,6 @@ function Mountain() {
     }
   }
   this.count_front_x =this.node_front[0].length;
-
 
 
 
@@ -351,9 +350,9 @@ function Mountain() {
       if (i != 0) {
         x += random(-(this.deadLine-beginLine) / (this.node_behind[0].length+1)*0.45, (this.deadLine-beginLine) / (this.node_behind[0].length+1)*0.45);
       }
-      let z = map(i, 0, this.node_behind.length-1, skyline.z+(real(500)+gap_block), skyline.z);
+      let z = map(i, 0, this.node_behind.length-1, skyline.z+(real(500)+gap_block_ver), skyline.z);
       if (i != this.node_behind.length-1) {
-        z += random(-(real(500)+gap_block)/2.0*0.25, (real(500)+gap_block)/2.0*0.25);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, (real(500)+gap_block_ver)/2.0*0.25);
       }
       let y = skyline.y;
       if (i == 1) {
@@ -381,11 +380,11 @@ function Mountain() {
       if (i != 0) {
         x += random(-(this.deadLine-beginLine) / (this.node_middle[0].length+1)*0.45, (this.deadLine-beginLine) / (this.node_middle[0].length+1)*0.45);
       }
-      let z = map(i, 0, this.node_middle.length-1, skyline.z+(real(500)+gap_block)*2, skyline.z+(real(500)+gap_block));
+      let z = map(i, 0, this.node_middle.length-1, skyline.z+(real(500)+gap_block_ver)*2, skyline.z+(real(500)+gap_block_ver));
 
       if (i != this.node_middle.length-1) {
-        z -= gap_block+real(150);
-        z += random(-(real(500)+gap_block)/2.0*0.25, (real(500)+gap_block)/2.0*0.25);
+        z -= gap_block_ver+real(150);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, (real(500)+gap_block_ver)/2.0*0.25);
       } else {
         z -= real(200);
       }
@@ -415,10 +414,10 @@ function Mountain() {
       if (i != 0) {
         x += map(noise(this.ran+91), 0, 1, -(this.deadLine-beginLine) / (this.node_front[0].length+1)*0.5, (this.deadLine-beginLine) / (this.node_front[0].length+1)*0.5);
       }
-      let z = map(i, 0, this.node_front.length-1, skyline.z+(real(500)+gap_block)*3, skyline.z+(real(500)+gap_block)*2);
-      z -= gap_block+real(150);
+      let z = map(i, 0, this.node_front.length-1, skyline.z+(real(500)+gap_block_ver)*3, skyline.z+(real(500)+gap_block_ver)*2);
+      z -= gap_block_ver+real(150);
       if (i != this.node_front.length-1) {
-        z += random(-(real(500)+gap_block)/2.0*0.25, 0);
+        z += random(-(real(500)+gap_block_ver)/2.0*0.25, 0);
       } else {
         z -= real(250);
       }

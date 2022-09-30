@@ -4,6 +4,10 @@ function UdgStation() {
   this.node_wall[1] = createVector(real(300), real(250), 0);
   this.node_wall[2] = createVector(real(300), real(1500), 0);
   this.node_wall[3] = createVector(-real(300), real(1500), 0);
+  if (state_viewHeight == 0) {
+    this.node_wall[0].y = skyline.y-real(100);
+    this.node_wall[1].y = skyline.y-real(50);
+  }
 
 
 
@@ -53,9 +57,19 @@ function UdgStation() {
   this.update = function() {
     this.node_wall[0] = createVector(-real(300), real(200), 0);
     this.node_wall[1].y = map(constrain(cameraY, -real(300), 0), -real(300), 0, real(250), real(200));
+    if (state_viewHeight == 0) {
+      this.node_wall[0].y = skyline.y-real(200);
+      this.node_wall[1].y = skyline.y-map(constrain(cameraY, -real(300), 0), -real(300), 0, real(100), real(200));
+    }
+
     if (cameraY > -real(300)) {
-      this.node_wall[0].y += constrain(map(cameraY, -real(300), -real(10), 0, real(50)), 0, real(50));
-      this.node_wall[1].y += constrain(map(cameraY, -real(300), -real(10), 0, real(50)), 0, real(50));
+      if (state_viewHeight != 0) {
+        this.node_wall[0].y += constrain(map(cameraY, -real(300), -real(10), 0, real(50)), 0, real(50));
+        this.node_wall[1].y += constrain(map(cameraY, -real(300), -real(10), 0, real(50)), 0, real(50));
+      } else {
+        this.node_wall[0].y += constrain(map(cameraY, -real(300), -real(10), 0, real(300)), 0, real(300));
+        this.node_wall[1].y += constrain(map(cameraY, -real(300), -real(10), 0, real(300)), 0, real(300));
+      }
     }
 
 

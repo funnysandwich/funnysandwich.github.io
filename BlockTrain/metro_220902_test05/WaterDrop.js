@@ -97,7 +97,7 @@ function WaterDrop() {
       const w_move = map(noise(x_move, y_move), 0, 1, this.W*0.25, this.W*1.25);
       const x = cos(map(i, 0, this.node.length, 0, TWO_PI)) * w_move/2.0;
       const y = sin(map(i, 0, this.node.length, 0, TWO_PI)) * w_move/2.0;
-      this.node[i] = createVector(x, y+Y_shake, 0).add(this.center);
+      this.node[i] = createVector(x, y+Y_shake-cameraY, 0).add(this.center);
 
       if (have_button_submerge  &&  open_shake  &&  time_shake < time_max_shake) {
         this.node[i].add(-real(map(noise(frameCount*100), 0, 1, -20, 20)), -real(map(noise(frameCount*100+999), 0, 1, -12, 12)), 0);

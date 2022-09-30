@@ -3,8 +3,14 @@ function RoadVer(begin, W, L, index) {
   this.begin = begin.copy();
   this.W = W;
   this.L = L;
-  this.W_road = W_road_basic * random(0.4, 0.8);
+  this.W_road = min(W_road_basic * random(0.4, 0.8), this.W-real(25));
   this.index = index;
+  this.rate_show_lamp = 0.5;
+  if (state_gap_block == 3) {
+    this.rate_show_lamp = 0.4;
+  } else if (state_gap_block == 2) {
+    this.rate_show_lamp = 0.4;
+  }
 
 
 
@@ -27,8 +33,20 @@ function RoadVer(begin, W, L, index) {
 
   this.node_road = Array.from(Array(6), () => new Array(4));
   for (let i=0; i<this.node_road.length; i++) {
-    let z_near = -(blocks[this.index*6].D+gap_block) * i;
-    let z_far = -(blocks[this.index*6].D+gap_block) * (i+1);
+    let z_near = -(blocks[this.index*6].D+gap_block_ver) * i;
+    if (i != 0) {
+      z_near += roadHor[this.index][i].W - (roadHor[this.index][i].W - roadHor[this.index][i].W_road)/2.0;
+    } else {
+      z_near -= real(5);
+    }
+
+    let z_far = -(blocks[this.index*6].D+gap_block_ver) * (i+1) + (roadHor[this.index][i].W - roadHor[this.index][i].W_road)/2.0;
+    if (z_near > this.node[3].z) {
+      z_near = max(this.node[3].z, z_far);
+    }
+    if (z_far < this.node[0].z) {
+      z_far = min(this.node[0].z, z_near);
+    }
     this.node_road[i][0] = createVector(this.node_center.x - (this.W_road)/2.0, this.node_center.y, z_far);
     this.node_road[i][1] = createVector(this.node_center.x + (this.W_road)/2.0, this.node_center.y, z_far);
     this.node_road[i][2] = createVector(this.node_center.x + (this.W_road)/2.0, this.node_center.y, z_near);
@@ -36,10 +54,18 @@ function RoadVer(begin, W, L, index) {
   }
 
 
+
+
+
   this.show_road = new Array(this.node_road.length);
   for (let i=0; i<this.show_road.length; i++) {
     this.show_road[i] = random(1) < 0.5;
+
+    if (blocks[this.index*6 + i].isMountain    ||  blocks[this.index*6 + i].isSea) {
+      this.show_road[i] = false;
+    }
   }
+
 
 
 
@@ -70,7 +96,7 @@ function RoadVer(begin, W, L, index) {
     this.W_lampR_fillet[i] = this.H_lampR_target[i] * random(0.1, 0.25);
     this.X_lampR_tilt[i] = real(map(noise(i*10+this.ran+999), 0, 1, -30, 20));
 
-    let z = -((i%2+1)*((real(100)*5)/3.0)  +  floor(i/2)*(gap_block+real(100)*5));
+    let z = -((i%2+1)*((real(100)*5)/3.0)  +  floor(i/2)*(gap_block_ver+real(100)*5));
     this.node_lampL[i][0] = createVector(this.node_center.x-this.W_road/2.0-real(10), this.node_center.y, z);
     this.node_lampL[i][1] = createVector(this.node_center.x-this.W_road/2.0-real(10) +  this.X_lampL_tilt[i], this.node_center.y-this.H_lampL[i], z);
     this.node_lampR[i][0] = createVector(this.node_center.x+this.W_road/2.0+real(10), this.node_center.y, z);
@@ -85,8 +111,8 @@ function RoadVer(begin, W, L, index) {
       this.node_lampR[i][j] = createVector(x_filletR, y_filletR, 0).add(this.node_lampR[i][1]);
     }
 
-    this.show_lampL[i] = noise(this.ran+i*10) < 0.5;
-    this.show_lampR[i] = noise(this.ran+i*10+999) < 0.5;
+    this.show_lampL[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+    this.show_lampR[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
     if (!this.show_road[floor(i/2)]) {
       this.show_lampL[i] = false;
       this.show_lampR[i] = false;
@@ -130,6 +156,9 @@ function RoadVer(begin, W, L, index) {
 
     for (let i=0; i<this.show_road.length; i++) {
       this.show_road[i] = random(1) < 0.5;
+      if (blocks[this.index*6 + i].isMountain    ||  blocks[this.index*6 + i].isSea) {
+        this.show_road[i] = false;
+      }
     }
 
 
@@ -144,8 +173,8 @@ function RoadVer(begin, W, L, index) {
       this.W_lampR_fillet[i] = this.H_lampR_target[i] * random(0.1, 0.25);
       this.X_lampR_tilt[i] = real(map(noise(i*10+this.ran+999), 0, 1, -30, 20));
 
-      this.show_lampL[i] = noise(this.ran+i*10) < 0.5;
-      this.show_lampR[i] = noise(this.ran+i*10+999) < 0.5;
+      this.show_lampL[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+      this.show_lampR[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
       if (!this.show_road[floor(i/2)]) {
         this.show_lampL[i] = false;
         this.show_lampR[i] = false;
@@ -252,11 +281,14 @@ function RoadVer(begin, W, L, index) {
           this.show_road[i] = true;
         }
       }
+      if (blocks[this.index*6 + i].isMountain    ||  blocks[this.index*6 + i].isSea) {
+        this.show_road[i] = false;
+      }
     }
 
     for (let i=0; i<this.node_lampL.length; i++) {
-      this.show_lampL[i] = noise(this.ran+i*10) < 0.5;
-      this.show_lampR[i] = noise(this.ran+i*10+999) < 0.5;
+      this.show_lampL[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+      this.show_lampR[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
       if (!this.show_road[floor(i/2)]) {
         this.show_lampL[i] = false;
         this.show_lampR[i] = false;
@@ -267,14 +299,14 @@ function RoadVer(begin, W, L, index) {
 
 
     for (let i=0; i<this.node_road.length; i++) {
-      let z_near = -(blocks[this.index*6].D+gap_block) * i;
+      let z_near = -(blocks[this.index*6].D+gap_block_ver) * i;
       if (i != 0) {
         z_near += roadHor[this.index][i].W - (roadHor[this.index][i].W - roadHor[this.index][i].W_road)/2.0;
       } else {
         z_near -= real(5);
       }
 
-      let z_far = -(blocks[this.index*6].D+gap_block) * (i+1) + (roadHor[this.index][i].W - roadHor[this.index][i].W_road)/2.0;
+      let z_far = -(blocks[this.index*6].D+gap_block_ver) * (i+1) + (roadHor[this.index][i].W - roadHor[this.index][i].W_road)/2.0;
       if (z_near > this.node[3].z) {
         z_near = max(this.node[3].z, z_far);
       }
@@ -302,7 +334,7 @@ function RoadVer(begin, W, L, index) {
         this.H_lampR[i] += this.H_add;
       }
 
-      let z = -((i%2+1)*((real(100)*5)/3.0)  +  floor(i/2)*(gap_block+real(100)*5));
+      let z = -((i%2+1)*((real(100)*5)/3.0)  +  floor(i/2)*(gap_block_ver+real(100)*5));
       this.node_lampL[i][0] = createVector(this.node_center.x-this.W_road/2.0-real(10), this.node_center.y, z);
       this.node_lampL[i][1] = createVector(this.node_center.x-this.W_road/2.0-real(10)  +  this.X_lampL_tilt[i], this.node_center.y-this.H_lampL[i], z);
       this.node_lampR[i][0] = createVector(this.node_center.x+this.W_road/2.0+real(10), this.node_center.y, z);
@@ -378,17 +410,16 @@ function RoadVer(begin, W, L, index) {
 
 
     for (let i=0; i<this.node_lampL.length; i++) {
-        if (this.show_lampL[i]) {
-          for (let j=0; j<this.node_lampL[i].length-1; j++) {
-            LINES_getLine(this.node_lampL[i][j], this.node_lampL[i][j+1]);
-          }
+      if (this.show_lampL[i]) {
+        for (let j=0; j<this.node_lampL[i].length-1; j++) {
+          LINES_getLine(this.node_lampL[i][j], this.node_lampL[i][j+1]);
         }
-        if (this.show_lampR[i]) {
-          for (let j=0; j<this.node_lampR[i].length-1; j++) {
-            LINES_getLine(this.node_lampR[i][j], this.node_lampR[i][j+1]);
-          }
+      }
+      if (this.show_lampR[i]) {
+        for (let j=0; j<this.node_lampR[i].length-1; j++) {
+          LINES_getLine(this.node_lampR[i][j], this.node_lampR[i][j+1]);
         }
-      
+      }
     }
   };
 }

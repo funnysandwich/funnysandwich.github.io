@@ -33,16 +33,18 @@ function BlockMiniVer(begin, W, D, state_side, index_z) {
 
 
 
-  let sum = rate_billMc + rate_billYoubetu + rate_billTezos + rate_billMessage + rate_billLike + rate_billCannotReturn + rate_billCall + rate_billPower + rate_billBitcoin + rate_billEthereum + rate_billTelegram + rate_parking + rate_billMetro + rate_billFile + rate_tree + rate_fair + rate_constrSite;
+  let sum = rate_billMc + rate_billYoubetu + rate_billTezos + rate_billMessage + rate_billLike + rate_billCannotReturn + rate_billCall + rate_billPower + rate_billBitcoin + rate_billEthereum + rate_billTelegram + rate_parking + rate_billMetro + rate_billFile + rate_tree + rate_fair;
   if (this.W >= real(250)) {
     sum += rate_paifang;
   }
   if (this.W >= real(90)) {
     sum += rate_PTTower;
+
   }
   sum += rate_gazebo;
 
-  sum = max(sum, 1);
+
+
   const real_rate_billMc = rate_billMc / sum;
   const real_rate_billYoubetu = rate_billYoubetu / sum;
   const real_rate_billTezos = rate_billTezos / sum;
@@ -59,7 +61,6 @@ function BlockMiniVer(begin, W, D, state_side, index_z) {
   const real_rate_billFile = rate_billFile / sum;
   const real_rate_tree = rate_tree / sum;
   const real_rate_fair = rate_fair / sum;
-  const real_rate_constrSite = rate_constrSite / sum;
   let real_rate_paifang = 0;
   if (this.W >= real(250)) {
     real_rate_paifang = rate_paifang / sum;
@@ -105,13 +106,11 @@ function BlockMiniVer(begin, W, D, state_side, index_z) {
     this.have_tree = true;
   } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair) {
     this.have_fair = true;
-  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_constrSite) {
-    this.have_constrSite = true;
-  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_constrSite + real_rate_paifang) {
+  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_paifang) {
     this.have_paifang = true;
-  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_constrSite + real_rate_paifang + real_rate_PTTower) {
+  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_paifang + real_rate_PTTower) {
     this.have_PTTower = true;
-  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_constrSite + real_rate_paifang + real_rate_PTTower + real_rate_gazebo) {
+  } else if (var_rate < real_rate_billMc + real_rate_billYoubetu + real_rate_billTezos + real_rate_billMessage + real_rate_billLike + real_rate_billCannotReturn + real_rate_billCall + real_rate_billPower + real_rate_billBitcoin + real_rate_billEthereum + real_rate_billTelegram + real_rate_parking + real_rate_billMetro + real_rate_billFile + real_rate_tree + real_rate_fair + real_rate_paifang + real_rate_PTTower + real_rate_gazebo) {
     this.have_gazebo = true;
   }
 

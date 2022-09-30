@@ -1,24 +1,41 @@
-document.onkeydown = function(event) {
-  let e = event || window.event;
-  if (e && e.keyCode == 73) {
-    open_info = !open_info;
-    if (state_winDecoration == 5) {
-      drawDrakWinFrame((WH_winFrame[state_winFrame][0]), WH_winFrame[state_winFrame][1], WH_winFrame[state_winFrame][2]);
-    }
-  }
-};
-document.onclick = function (event) {
-  let e = event || window.event;
 
+//function mouseClicked() {
+
+//  if (is_phone) {
+//    time_touch = 0;
+//    return false;
+//  }
+//}
+
+
+function mouseDragged() {
+  if (open_fog) {
+    FOG_update_wipe();
+  }
+  if (is_phone) {
+    time_touch = 0;
+    return false;
+  }
+}
+
+
+function mousePressed() {
+  
   //------- loadSongs -------
   if (is_song_load_done  &&  !open_play  &&  var_loading == 1) {
     open_play = true;
-    song_track.amp(0);
+    song_track.setVolume(0);
     song_track.loop();
     if (songs.length > 0) {
       for (let i=0; i<songs.length; i++) {
-        songs[i].amp(0);
+        songs[i].setVolume(0);
         songs[i].loop();
+      }
+    }
+    if (songs_object.length > 0) {
+      for (let i=0; i<songs_object.length; i++) {
+        songs_object[i].setVolume(0);
+        songs_object[i].loop();
       }
     }
   }
@@ -32,6 +49,11 @@ document.onclick = function (event) {
     if (songs.length > 0) {
       for (let i=0; i<songs.length; i++) {
         songs[i].pause();
+      }
+    }
+    if (songs_object.length > 0) {
+      for (let i=0; i<songs_object.length; i++) {
+        songs_object[i].pause();
       }
     }
   } else if (have_button_sprint  &&  dist(real(13), real(250), mouseX, mouseY) < real(10)) {
@@ -109,6 +131,10 @@ document.onclick = function (event) {
     if (open_mountain) {
       mountain.lightUpAllWin();
     }
+
+    if (state_winDecoration == 10) {
+      open_LED_shine = true;
+    }
   } else if (have_button_submerge  &&  dist(width-real(13), real(250+25), mouseX, mouseY) < real(10)) {
     if (blocks.length > 0) {
       for (let i=0; i<blocks.length; i++) {
@@ -151,18 +177,23 @@ document.onclick = function (event) {
 
 
     time_TVSnow = 0;
+  } else {
+    if (state_winDecoration == 7) {
+      open_shutter = true;
+    } else if (state_winDecoration == 8) {
+      if (is_onTheGround) {
+        open_flash = true;
+      }
+    } else if (state_winDecoration == 10) {
+      open_LED_shine = true;
+    }
   }
-};
-
-
-function mouseDragged() {
-  if (open_fog) {
-    FOG_update_wipe();
-  }
-}
-
-
-function mousePressed() {
+  
+  
+  
+  
+  
+  
   if (open_winScreen) {
     if (map(mouseX, 0, width, -real(156), real(156)) > node_winScreen_lu.x-real(1.5)  &&  map(mouseX, 0, width, -real(156), real(156)) < node_winScreen_lu.x+real(WH_winFrame[state_winFrame][0])+real(1.5)  &&
       map(mouseY, 0, height, -real(156), real(156)) > node_winScreen_lu.y-real(15)  &&  map(mouseY, 0, height, -real(156), real(156)) < node_winScreen_lu.y) {
@@ -173,17 +204,41 @@ function mousePressed() {
       open_winScreen_follow = true;
     }
   }
+  
+  
+  
+  
+  if (is_phone) {
+    time_touch = 0;
+    return false;
+  }
 }
+
+
+
+
+
 
 function mouseReleased() {
   if (open_winScreen) {
     open_winScreen_follow = false;
   }
+  if (is_phone) {
+    time_touch = 0;
+    return false;
+  }
 }
 
 
 function keyPressed() {
-  if (key == ' ') {
+  if (key == 'i'  ||  key == 'I') {
+    open_info = !open_info;
+    if (state_winDecoration == 5) {
+      drawDrakWinFrame((WH_winFrame[state_winFrame][0]), WH_winFrame[state_winFrame][1], WH_winFrame[state_winFrame][2]);
+    }
+  } else if (key == 's' || key == 'S') {
+    save("BlockTrain_"+year()+nf(month(), 2)+nf(day(), 2)+"_"+nf(hour(), 2)+nf(minute(), 2)+nf(second(), 2)+"_"+nf(frameCount, 5)+".jpg");
+  } else if (key == ' ') {
     state_winFrame = floor(random(0, WH_winFrame.length));
     if (state_winFrame >= WH_winFrame.length) {
       state_winFrame = 0;
@@ -367,6 +422,19 @@ function keyPressed() {
     } else {
       open_winScreen = false;
     }
+    if (state_winFrame == 10) {
+      this.time_speak = 0;
+      this.open_openMouth = true;
+      this.time_max_speak = floor(random(5, 15));
+      this.time_min_speak = 0;
+      this.time_delay_max_speak = 0;
+      this.time_delay_min_speak = 0;
+    } else if (state_winFrame == 11) {
+      this.W_mess = new Array(WH_winFrame[state_winFrame][3]);
+      for (let i=0; i<W_mess.length; i++) {
+        W_mess[i] = real(WH_winFrame[state_winFrame][0]);
+      }
+    }
 
     if (open_TVScreen) {
       this.open_TVSnow = true;
@@ -385,7 +453,7 @@ function keyPressed() {
     }
   } else if (key == 'q'  ||  key == 'Q') {
     state_winDecoration += 1;
-    if (state_winDecoration > 6) {
+    if (state_winDecoration > 10) {
       state_winDecoration = 0;
     }
 
@@ -431,6 +499,26 @@ function keyPressed() {
 
         open_handle_follow[i] = false;
       }
+    } else if (state_winDecoration == 7) {
+      this.time_shutter = 0;
+      this.time_max_shutter = 15;
+      this.open_shutter = false;
+    } else if (state_winDecoration == 8) {
+      this.time_blink = 0;
+      this.time_max_blink = 15;
+      this.open_blink = false;
+      this.num_blink = 1;
+    } else if (state_winDecoration == 9) {
+      this.time_fan = 0;
+    } else if (state_winDecoration == 10) {
+      this.num_LED = 16;
+      this.time_breathe = new Array(num_LED);
+      this.time_max_breathe = 240;
+      for (let i=0; i<time_breathe.length; i++) {
+        time_breathe[i] = map(i, 0, time_breathe.length, -60, time_max_breathe);
+      }
+      this.open_LED_shine = false;
+      this.time_LED_shine = false;
     }
   } else if (key == 'c' || key == 'C') {
     state_color += 1;
@@ -512,8 +600,9 @@ function keyPressed() {
     if (state_winDecoration == 5) {
       drawDrakWinFrame((WH_winFrame[state_winFrame][0]), WH_winFrame[state_winFrame][1], WH_winFrame[state_winFrame][2]);
     }
-  } else if (key == 's' || key == 'S') {
-    save("Tamsui_"+year()+nf(month(), 2)+nf(day(), 2)+"_"+nf(hour(), 2)+nf(minute(), 2)+nf(second(), 2)+"_"+nf(frameCount, 5)+".jpg");
+
+
+    card.update();
   } else if (key == '1') {
     if (have_button_invert) {
       open_invert = !open_invert;

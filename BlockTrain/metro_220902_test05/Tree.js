@@ -1,7 +1,7 @@
 function Tree(begin_room, W_room, index_z) {
   this.ran = random(-999, 999);
   this.index_z = index_z;
-  this.var_easing1 = random(0.1, 0.6);
+  this.var_easing1 = random(0.2, 0.6);
   this.begin_room = begin_room.copy();
   this.W_room = W_room;
 
@@ -13,7 +13,7 @@ function Tree(begin_room, W_room, index_z) {
   if (state_floor == 3) {
     this.H_ori_target = H_floor * random(1.75, 2.5);
   }
-  this.H_ori = 0;
+  this.H_ori = this.H_ori_target;
 
 
   this.W = real(random(15, 30)) * map(this.H_ori_target, H_floor*0.55, H_floor*2.5, 0.35, 1.5);
@@ -193,7 +193,7 @@ function Tree(begin_room, W_room, index_z) {
 
   this.change = function() {
     this.ran = random(-999, 999);
-    this.var_easing1 = random(0.1, 0.6);
+    this.var_easing1 = random(0.2, 0.6);
 
     this.node = new Array(floor(random(4, 7)));
 
@@ -445,7 +445,7 @@ function Tree(begin_room, W_room, index_z) {
     let n1 = createVector(0, -this.H_ori, 0);
     n1 = PRotateZ(n1, this.node_rotate[1]);
     n1.add(this.node[0]);
-    this.node[1] = easing_p(this.node[1], n1, 0.6);
+    this.node[1] = easing_p(this.node[1], n1, 0.8);
     //this.node[1] = createVector(0, -this.H_ori, 0);
     //this.node[1] = PRotateZ(this.node[1], this.node_rotate[1]);
     //this.node[1].add(this.node[0]);
@@ -454,6 +454,7 @@ function Tree(begin_room, W_room, index_z) {
       n = PRotateZ(n, this.node_rotate[i]);
       n.add(this.node[i-1]);
       this.node[i] = easing_p(this.node[i], n, 0.6);
+      this.node[i].x = n.x;
       //this.node[i] = p5.Vector.sub(this.node[i-1], this.node[i-2]).mult(0.8);
       //this.node[i] = PRotateZ(this.node[i], this.node_rotate[i]);
       //this.node[i].add(this.node[i-1]);

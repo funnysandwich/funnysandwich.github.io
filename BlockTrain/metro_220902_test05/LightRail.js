@@ -1,10 +1,11 @@
-function LightRail(index_z) {
+function LightRail(index, index_z) {
+  this.index = index;
   this.index_z = index_z;
   this.W_target = abs(beginLine - endLine);
   this.W = this.W_target;
   this.D = real(100)*4.0;
   this.H = real(55);
-  this.node_center = createVector(0, skyline.y-H_pier[this.index_z], -(real(100)*5/2.0 + this.index_z*(real(100)*5+gap_block)));
+  this.node_center = createVector(0, skyline.y-H_pier[this.index_z], -(real(100)*5/2.0 + this.index_z*(real(100)*5+gap_block_ver)));
 
   this.var_easing1 = random(0.075, 0.175)*0.45;
 
@@ -33,7 +34,7 @@ function LightRail(index_z) {
 
 
   this.wait_train = 0;
-  this.wait_max_train = floor(random(30, 200));
+  this.wait_max_train = floor(random(90, 400));
   this.ready_open_createTrain = true;
   this.train = [];
 
@@ -71,6 +72,8 @@ function LightRail(index_z) {
 
 
   this.update = function() {
+
+
     this.W = easing_x(this.W, this.W_target, this.var_easing1);
     this.node_center.y = skyline.y-H_pier[this.index_z];
 
@@ -104,7 +107,7 @@ function LightRail(index_z) {
     } else {
       if (this.ready_open_createTrain) {
         this.ready_open_createTrain = false;
-        this.train.push(new Train(createVector(beginLine, this.node_center.y, this.node_center.z), real(random(600, 750)), this.D*0.65, true));
+        this.train.push(new Train(createVector(beginLine, this.node_center.y, this.node_center.z), real(random(600, 750)), this.D*0.65, true, this.index, this.index_z));
       }
     }
 
@@ -113,6 +116,21 @@ function LightRail(index_z) {
 
 
     if (this.train.length > 0) {
+      
+        let have_any_train_in_canvas = false;
+        for (let i=0; i<this.train.length; i++) {
+          if (this.train[i].node1_center.x > -real(2500)-this.train[i].W/2.0  &&  this.train[i].node1_center.x < real(2500)-this.train[i].W/2.0+(this.train[i].W+this.train[i].gap)*this.train[i].num) {
+            have_any_train_in_canvas = true;
+          }
+        }
+        if (!have_any_train_in_canvas) {
+          if (song_trainPass[this.index].isPlaying()) {
+            song_trainPass[this.index].stop();
+          }
+        }
+      
+
+
       for (let i=0; i<this.train.length; i++) {
         this.train[i].update(this.node_center);
       }
@@ -120,7 +138,7 @@ function LightRail(index_z) {
         if (this.train[i].dead) {
           this.train.splice(i, 1);
           this.wait_train = 0;
-          this.wait_max_train = floor(random(30, 200));
+          this.wait_max_train = floor(random(90, 400));
           this.ready_open_createTrain = true;
         }
       }

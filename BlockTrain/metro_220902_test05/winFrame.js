@@ -69,6 +69,14 @@ function drawWinFrame(w, h, w_fillet, num, state, gap) {
         drawCurtain(w, h, z);
       } else if (state_winDecoration == 6) {
         drawHandle(w, h, z);
+      } else if (state_winDecoration == 7) {
+        drawShutter(w, h, z);
+      } else if (state_winDecoration == 8) {
+        drawFlash(w, h, z);
+      } else if (state_winDecoration == 9) {
+        drawFan(node, w, h, z);
+      } else if (state_winDecoration == 10) {
+        drawLED(node, w, h, z, 1, 0);
       }
     } else if (state == 1) {
       const node = new Array(4*4);
@@ -227,6 +235,243 @@ function drawWinFrame(w, h, w_fillet, num, state, gap) {
         LINES_getLine(node_winScreen_lu, node_winScreen_lu.copy().add(0, -real(15), 0));
         LINES_getLine(node_winScreen_ru, node_winScreen_ru.copy().add(0, -real(15), 0));
       }
+    } else if (state == 3) {
+
+      let w_mouth = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, w, w*0.4);
+      let h_mouth = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, real(4), h);
+      if (open_follow) {
+        h_mouth = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, 0, h);
+      }
+
+      let node = new Array(4);
+      node[0] = createVector(0, -h_mouth*0.5, z);
+      node[1] = createVector(w_mouth*0.5, 0, z);
+      node[2] = createVector(0, h_mouth*0.5, z);
+      node[3] = createVector(-w_mouth*0.5, 0, z);
+
+      let node_lips =  Array.from(Array(2), () => new Array(3));
+      let h_lips = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, real(18), real(25));
+      let h_lips_peak = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, h_lips+real(8), h_lips+real(-7));
+      let x_lips_peak = map(constrain(time_speak, time_min_speak, time_max_speak), time_min_speak, time_max_speak, real(20), real(15));
+
+      for (let i=0; i<2; i++) {
+        node_lips[i][1] = node[i*2].copy().add(0, h_lips * pow(-1, i+1), real(1));
+        node_lips[i][0] = node[i*2].copy().add(-x_lips_peak, h_lips_peak * pow(-1, i+1), real(1));
+        node_lips[i][2] = node[i*2].copy().add(x_lips_peak, h_lips_peak * pow(-1, i+1), real(1));
+      }
+
+
+
+      if (!open_info) {
+        fill(255, 0, 0);
+        let c1 = c_winFrame;
+        let c2 = lerpColor(c_winFrame, c_far, 0.35);
+        let c3 = lerpColor(c_winFrame, c_far, 0.25);
+        let c4 = lerpColor(c_winFrame, c_far, 0.15);
+        if (have_button_invert) {
+          c1 = c_winFrame_copy;
+          c2 = lerpColor(c_winFrame_copy, c_far_copy, 0.35);
+          c3 = lerpColor(c_winFrame_copy, c_far_copy, 0.25);
+          c4 = lerpColor(c_winFrame_copy, c_far_copy, 0.15);
+        }
+
+        TRIANGLES_getRect_fill4(node[3], node[0], node_lips[0][1], node_lips[0][0], c4, c4, c3, c3);
+        TRIANGLES_getRect_fill4(node[1], node[0], node_lips[0][1], node_lips[0][2], c4, c3, c2, c2);
+        TRIANGLES_getRect_fill4(node[3], node[2], node_lips[1][1], node_lips[1][0], c3, c3, c4, c4);
+        TRIANGLES_getRect_fill4(node[1], node[2], node_lips[1][1], node_lips[1][2], c2, c2, c3, c3);
+
+
+        c2 = lerpColor(c_winFrame, c_far, 0.2);
+        c3 = lerpColor(c_winFrame, c_far, 0.15);
+        c4 = lerpColor(c_winFrame, c_far, 0.1);
+        if (have_button_invert) {
+          c2 = lerpColor(c_winFrame_copy, c_far_copy, 0.2);
+          c3 = lerpColor(c_winFrame_copy, c_far_copy, 0.15);
+          c4 = lerpColor(c_winFrame_copy, c_far_copy, 0.1);
+        }
+        TRIANGLES_getTriangle_fill3(node[3], node[0], createVector(0, -h*0.5-real(25), z), c1, c3, c1);
+        TRIANGLES_getTriangle_fill3(node[1], node[0], createVector(0, -h*0.5-real(25), z), c1, c3, c4);
+        TRIANGLES_getTriangle_fill3(node[3], node[2], createVector(0, h*0.5+real(25), z), c1, c4, c1);
+        TRIANGLES_getTriangle_fill3(node[1], node[2], createVector(0, h*0.5+real(25), z), c1, c2, c1);
+        fill(c_winFrame);
+        TRIANGLES_getRect(createVector(-width, 0, z), node[3], createVector(0, -h*0.5-real(25), z), createVector(0, -height, z));
+        TRIANGLES_getRect(createVector(width, 0, z), node[1], createVector(0, -h*0.5-real(25), z), createVector(0, -height, z));
+        TRIANGLES_getRect(createVector(-width, 0, z), node[3], createVector(0, h*0.5+real(25), z), createVector(0, height, z));
+        TRIANGLES_getRect(createVector(width, 0, z), node[1], createVector(0, h*0.5+real(25), z), createVector(0, height, z));
+      } else {
+        LINES_getRect(node[0], node[1], node[2], node[3]);
+        LINES_getLine(node[3], node_lips[0][0]);
+        LINES_getLine(node_lips[0][0], node_lips[0][1]);
+        LINES_getLine(node_lips[0][1], node_lips[0][2]);
+        LINES_getLine(node_lips[0][2], node[1]);
+
+        LINES_getLine(node[3], node_lips[1][0]);
+        LINES_getLine(node_lips[1][0], node_lips[1][1]);
+        LINES_getLine(node_lips[1][1], node_lips[1][2]);
+        LINES_getLine(node_lips[1][2], node[1]);
+
+
+        LINES_getLine(node[3], createVector(-width, 0, z));
+        LINES_getLine(node[1], createVector(width, 0, z));
+
+        LINES_getLine(node_lips[0][1], createVector(0, -h*0.5-real(25), z));
+        LINES_getLine(node[3], createVector(0, -h*0.5-real(25), z));
+        LINES_getLine(node[1], createVector(0, -h*0.5-real(25), z));
+        LINES_getLine(node_lips[1][1], createVector(0, h*0.5+real(25), z));
+        LINES_getLine(node[3], createVector(0, h*0.5+real(25), z));
+        LINES_getLine(node[1], createVector(0, h*0.5+real(25), z));
+      }
+    } else if (state == 5  ||  state == 6  ||  state == 8) {
+      const node = new Array(10*4);
+
+      for (let i=0; i<node.length; i++) {
+        let s_w_fillet = w_fillet;
+        if (state == 5) {
+          s_w_fillet = real(5);
+          if (i < node.length/2) {
+            s_w_fillet = w_fillet;
+          }
+        } else if (state == 6) {
+          s_w_fillet = real(5);
+          if (i >= node.length/4  &&  i < node.length/4*3) {
+            s_w_fillet = w_fillet;
+          }
+        } else if (state == 8) {
+          s_w_fillet = real(2.5);
+          //if (i >= node.length/4  &&  i < node.length/4*2  ||  i >= node.length/4*3  &&  i < node.length) {
+          if (i < node.length/4  ||  i >= node.length/4*2  &&  i < node.length/4*3) {
+            s_w_fillet = w_fillet;
+          }
+        }
+        const x = cos(map(i, 0, node.length-1, -PI, PI)) * (s_w_fillet*0.5);
+        const y = sin(map(i, 0, node.length-1, -PI, PI)) * (s_w_fillet*0.5) + Y_shake;
+        if (i < floor(node.length/4)) {
+          node[i] = createVector(x-(w-s_w_fillet)*0.5, y-(h-s_w_fillet)*0.5, z);
+        } else if (i < floor(node.length/4)*2) {
+          node[i] = createVector(x+(w-s_w_fillet)*0.5, y-(h-s_w_fillet)*0.5, z);
+        } else if (i < floor(node.length/4)*3) {
+          node[i] = createVector(x+(w-s_w_fillet)*0.5, y+(h-s_w_fillet)*0.5, z);
+        } else {
+          node[i] = createVector(x-(w-s_w_fillet)*0.5, y+(h-s_w_fillet)*0.5, z);
+        }
+      }
+      if (!open_info) {
+        for (let j=0; j<4; j++) {
+
+          for (let i=floor(node.length/4)*j; i<floor(node.length/4)*(j+1)-1; i++) {
+            if (j == 0) {
+              vertex(-width*0.75, -height*0.75, z);
+            } else if (j == 1) {
+              vertex(width*0.75, -height*0.75, z);
+            } else if (j == 2) {
+              vertex(width*0.75, height*0.75, z);
+            } else {
+              vertex(-width*0.75, height*0.75, z);
+            }
+            vertex(node[i%node.length].x, node[i%node.length].y, node[i%node.length].z);
+            vertex(node[(i+1)%node.length].x, node[(i+1)%node.length].y, node[(i+1)%node.length].z);
+          }
+        }
+        TRIANGLES_getRect(node[node.length/4-1], node[node.length/4], createVector(width*0.75, -height*0.75, z), createVector(-width*0.75, -height*0.75, z));
+        TRIANGLES_getRect(node[node.length/4*2-1], node[node.length/4*2], createVector(width*0.75, height*0.75, z), createVector(width*0.75, -height*0.75, z));
+        TRIANGLES_getRect(node[node.length/4*3-1], node[node.length/4*3], createVector(-width*0.75, height*0.75, z), createVector(width*0.75, height*0.75, z));
+        TRIANGLES_getRect(node[node.length-1], node[0], createVector(-width*0.75, -height*0.75, z), createVector(-width*0.75, height*0.75, z));
+      } else {
+        for (let i=0; i<node.length; i++) {
+          vertex(node[i].x, node[i].y, node[i].z);
+          vertex(node[(i+1)%node.length].x, node[(i+1)%node.length].y, node[(i+1)%node.length].z);
+        }
+      }
+
+      if (state_winDecoration == 1) {
+        drawSubmarineWin(node, z, num);
+      } else if (state_winDecoration == 2) {
+        drawWinShade(node, w, h, z, 0);
+      } else if (state_winDecoration == 3) {
+        drawRollUpWin(createVector(0, node[node.length/4-1].y, z), w, h, z);
+      } else if (state_winDecoration == 4) {
+        drawCurtain(w, h, z);
+      } else if (state_winDecoration == 6) {
+        drawHandle(w, h, z);
+      } else if (state_winDecoration == 7) {
+        drawShutter(w, h, z);
+      } else if (state_winDecoration == 8) {
+        drawFlash(w, h, z);
+      } else if (state_winDecoration == 9) {
+        drawFan(node, w, h, z);
+      } else if (state_winDecoration == 10) {
+        drawLED(node, w, h, z, 1, 0);
+      }
+    } else if (state == 7) {
+      const node = new Array(10*4);
+
+      for (let i=0; i<node.length; i++) {
+        let x=0.0, y=0.0;
+        if (i < floor(node.length/4)) {
+          x = cos(map(i, 0, node.length/4-1, HALF_PI, 0)) * (w_fillet*0.5);
+          y = sin(map(i, 0, node.length/4-1, HALF_PI, 0)) * (w_fillet*0.5) + Y_shake;
+          node[i] = createVector(x-w/2.0, y-h/2.0, z);
+        } else if (i < floor(node.length/4)*2) {
+          x = cos(map(i, node.length/4, node.length/4*2-1, PI, HALF_PI)) * (w_fillet*0.5);
+          y = sin(map(i, node.length/4, node.length/4*2-1, PI, HALF_PI)) * (w_fillet*0.5) + Y_shake;
+          node[i] = createVector(x+w/2.0, y-h/2.0, z);
+        } else if (i < floor(node.length/4)*3) {
+          x = cos(map(i, node.length/4*2, node.length/4*3-1, PI+HALF_PI, PI)) * (w_fillet*0.5);
+          y = sin(map(i, node.length/4*2, node.length/4*3-1, PI+HALF_PI, PI)) * (w_fillet*0.5) + Y_shake;
+          node[i] = createVector(x+w/2.0, y+h/2.0, z);
+        } else {
+          x = cos(map(i, node.length/4*3, node.length-1, 0, -HALF_PI)) * (w_fillet*0.5);
+          y = sin(map(i, node.length/4*3, node.length-1, 0, -HALF_PI)) * (w_fillet*0.5) + Y_shake;
+          node[i] = createVector(x-w/2.0, y+h/2.0, z);
+        }
+      }
+      if (!open_info) {
+        for (let j=0; j<4; j++) {
+
+          for (let i=floor(node.length/4)*j; i<floor(node.length/4)*(j+1)-1; i++) {
+            if (j == 0) {
+              vertex(-width*0.75, -height*0.75, z);
+            } else if (j == 1) {
+              vertex(width*0.75, -height*0.75, z);
+            } else if (j == 2) {
+              vertex(width*0.75, height*0.75, z);
+            } else {
+              vertex(-width*0.75, height*0.75, z);
+            }
+            vertex(node[i%node.length].x, node[i%node.length].y, node[i%node.length].z);
+            vertex(node[(i+1)%node.length].x, node[(i+1)%node.length].y, node[(i+1)%node.length].z);
+          }
+        }
+        TRIANGLES_getRect(node[node.length/4-1], node[node.length/4], createVector(width*0.75, -height*0.75, z), createVector(-width*0.75, -height*0.75, z));
+        TRIANGLES_getRect(node[node.length/4*2-1], node[node.length/4*2], createVector(width*0.75, height*0.75, z), createVector(width*0.75, -height*0.75, z));
+        TRIANGLES_getRect(node[node.length/4*3-1], node[node.length/4*3], createVector(-width*0.75, height*0.75, z), createVector(width*0.75, height*0.75, z));
+        TRIANGLES_getRect(node[node.length-1], node[0], createVector(-width*0.75, -height*0.75, z), createVector(-width*0.75, height*0.75, z));
+      } else {
+        for (let i=0; i<node.length; i++) {
+          vertex(node[i].x, node[i].y, node[i].z);
+          vertex(node[(i+1)%node.length].x, node[(i+1)%node.length].y, node[(i+1)%node.length].z);
+        }
+      }
+
+      if (state_winDecoration == 1) {
+        drawSubmarineWin(node, z, num);
+      } else if (state_winDecoration == 2) {
+        drawWinShade(node, w, h, z, 0);
+      } else if (state_winDecoration == 3) {
+        drawRollUpWin(createVector(0, node[node.length/4-1].y, z), w, h, z);
+      } else if (state_winDecoration == 4) {
+        drawCurtain(w, h, z);
+      } else if (state_winDecoration == 6) {
+        drawHandle(w, h, z);
+      } else if (state_winDecoration == 7) {
+        drawShutter(w, h, z);
+      } else if (state_winDecoration == 8) {
+        drawFlash(w, h, z);
+      } else if (state_winDecoration == 9) {
+        drawFan(node, w, h, z);
+      } else if (state_winDecoration == 10) {
+        drawLED(node, w, h, z, 1, 0);
+      }
     }
   } else {
     if (state == 0) {
@@ -335,68 +580,159 @@ function drawWinFrame(w, h, w_fillet, num, state, gap) {
         drawCurtain(p5.Vector.dist(node[0][0], node[node.length-1][node[0].length/4*2-1]), p5.Vector.dist(node[0][node[0].length/4-1], node[0][node[0].length/4*3]), z);
       } else if (state_winDecoration == 6) {
         drawHandle(p5.Vector.dist(node[0][0], node[node.length-1][node[0].length/4*2-1]), p5.Vector.dist(node[0][node[0].length/4-1], node[0][node[0].length/4*3]), z);
+      } else if (state_winDecoration == 9) {
+        if (num == 2) {
+          for (let i=0; i<num; i++) {
+            drawFan(node[i], w, h, z);
+          }
+        } else {
+          drawFan(node[1], p5.Vector.dist(node[0][0], node[node.length-1][node[0].length/4*2-1]), p5.Vector.dist(node[0][node[0].length/4-1], node[0][node[0].length/4*3]), z);
+        }
+      } else if (state_winDecoration == 10) {
+        for (let i=0; i<num; i++) {
+          drawLED(node[i], w, h, z, num, i);
+        }
+      }
+    } else if (state == 4) {
+
+      const h_mess = (h-(gap*(num-1))) / num;
+      w_fillet = h_mess * 0.44;
+      gap = real(10.82);
+
+
+
+      for (let i=0; i<num; i++) {
+        if (mouseX > screenPosition(createVector(-w/2.0, -h/2.0, z)).x +width/2                 &&
+          mouseX < screenPosition(createVector(w/2.0, -h/2.0, z)).x +width/2                    &&
+          mouseY > screenPosition(createVector(w/2.0, -h/2.0 +(h_mess+gap)*i, z)).y +height/2   &&
+          mouseY < screenPosition(createVector(w/2.0, -h/2.0 +(h_mess+gap)*i +h_mess, z)).y +height/2
+          ) {
+          let target = max(map(mouseX, screenPosition(createVector(-w/2.0, -h/2.0, z)).x +width/2, screenPosition(createVector(w/2.0, -h/2.0, z)).x +width/2, 0, real(WH_winFrame[state_winFrame][0])), h_mess);
+          W_mess[i] = easing_x(W_mess[i], target, 0.25);
+        } else {
+          W_mess[i] = easing_x(W_mess[i], real(WH_winFrame[state_winFrame][0]), 0.05);
+        }
+      }
+
+
+      let node = Array.from(Array(num), () => new Array(4*4));
+      for (let i=0; i<node.length; i++) {
+        let y_move = -h/2.0 + h_mess/2.0  +  (h_mess + gap) * i;
+        for (let j=0; j<node[i].length; j++) {
+          let x=0.0, y=0.0;
+          if (j < node[i].length/4) {
+            x = cos(map(j, 0, node[i].length/4-1, PI, PI+HALF_PI)) * w_fillet;
+            y = sin(map(j, 0, node[i].length/4-1, PI, PI+HALF_PI)) * w_fillet;
+            x -= W_mess[i]/2.0 - w_fillet;
+            y -= h_mess/2.0 - w_fillet;
+          } else if (j < node[i].length/4*2) {
+            x = cos(map(j, node[i].length/4, node[i].length/4*2-1, -HALF_PI, 0)) * w_fillet;
+            y = sin(map(j, node[i].length/4, node[i].length/4*2-1, -HALF_PI, 0)) * w_fillet;
+            x += W_mess[i]/2.0 - w_fillet;
+            y -= h_mess/2.0 - w_fillet;
+          } else if (j < node[i].length/4*3) {
+            x = cos(map(j, node[i].length/4*2, node[i].length/4*3-1, 0, HALF_PI)) * w_fillet;
+            y = sin(map(j, node[i].length/4*2, node[i].length/4*3-1, 0, HALF_PI)) * w_fillet;
+            x += W_mess[i]/2.0 - w_fillet;
+            y += h_mess/2.0 - w_fillet;
+          } else {
+            x = cos(map(j, node[i].length/4*3, node[i].length-1, HALF_PI, PI)) * w_fillet;
+            y = sin(map(j, node[i].length/4*3, node[i].length-1, HALF_PI, PI)) * w_fillet;
+            x -= W_mess[i]/2.0 - w_fillet;
+            y += h_mess/2.0 - w_fillet;
+          }
+          node[i][j] = createVector(x-w/2.0+W_mess[i]/2.0, y+y_move+Y_shake, z);
+        }
+      }
+
+
+      let node_coner = Array.from(Array(num), () => new Array(5));
+      for (let i=0; i<node_coner.length; i++) {
+        node_coner[i][0] = createVector(0, 0, 0);
+        node_coner[i][1] = createVector(-real(5.382)/real(180)*h, -real(1.921)/real(180)*h, 0);
+        node_coner[i][2] = createVector(-real(10.546)/real(180)*h, -real(8.152)/real(180)*h, 0);
+        node_coner[i][3] = createVector(-real(8.393)/real(180)*h, real(1.769)/real(180)*h, 0);
+        for (let j=0; j<node_coner[i].length-1; j++) {
+          node_coner[i][j].add(node[i][1]);
+        }
+        node_coner[i][4] = node[i][0].copy();
       }
 
 
 
 
 
-      /*
-      for (let i=0; i<4; i++) {
-       beginShape(TESS);
-       let iii = 0;
-       if (i == 0) {
-       iii = 0;
-       vertex(-width*0.75, 0, z);
-       } else if (i == 1) {
-       iii = num - 1;
-       vertex(0, -height*0.75, z);
-       } else if (i == 2) {
-       iii = num - 1;
-       vertex(width*0.75, 0, z);
-       } else {
-       iii = 0;
-       vertex(0, height*0.75, z);
-       }
-       for (let j=floor(node[iii].length/4)*i; j<floor(node[iii].length/4)*(i+1)+1; j++) {
-       vertex(node[iii][j%node[iii].length].x, node[iii][j%node[iii].length].y, node[iii][j%node[iii].length].z);
-       }
-       if (i == 0) {
-       for (let j=0; j<num-1; j++) {
-       vertex(node[j+1][floor(node[j].length/4)-1].x, node[j+1][floor(node[j].length/4)-1].y, node[j+1][floor(node[j].length/4)-1].z);
-       vertex(node[j+1][floor(node[j].length/4)].x, node[j+1][floor(node[j].length/4)].y, node[j+1][floor(node[j].length/4)].z);
-       }
-       vertex(0, -height*0.75, z);
-       } else if (i ==1 ) {
-       vertex(width*0.75, 0, z);
-       } else if (i == 2) {
-       for (let j=num-1; j>=0+1; j--) {
-       vertex(node[j-1][floor(node[j].length/4)*3-1].x, node[j-1][floor(node[j].length/4)*3-1].y, node[j-1][floor(node[j].length/4)*3-1].z);
-       vertex(node[j-1][floor(node[j].length/4)*3].x, node[j-1][floor(node[j].length/4)*3].y, node[j-1][floor(node[j].length/4)*3].z);
-       }
-       vertex(0, height*0.75, z);
-       } else {
-       vertex(-width*0.75, 0, z);
-       }
-       endShape(CLOSE);
-       }
-       
-       for (let i=0; i<num-1; i++) {
-       beginShape(TESS);
-       for (let j=floor(node[0].length/4); j<floor(node[0].length/4) *3; j++) {
-       vertex(node[i][j].x, node[i][j].y, node[i][j].z);
-       }
-       for (let j=floor(node[0].length/4) *3; j<node[0].length; j++) {
-       vertex(node[i+1][j].x, node[i+1][j].y, node[i+1][j].z);
-       }
-       for (let j=0; j<floor(node[0].length/4); j++) {
-       vertex(node[i+1][j].x, node[i+1][j].y, node[i+1][j].z);
-       }
-       endShape(CLOSE);
-       }
-       
-       
-       */
+
+
+
+
+
+
+
+      if (!open_info) {
+
+
+        fill(c_winFrame);
+        for (let i=0; i<node.length-1; i++) {
+          //gap_middle
+          TRIANGLES_getRect(node[i][node[i].length/4*3], node[i][node[i].length/4*3-1], node[i+1][node[i+1].length/4], node[i+1][node[i+1].length/4-1]);
+          //gap_left
+          for (let j=0; j<node[i].length/4-1-1; j++) {
+            TRIANGLES_getRect(node[i][node[i].length/4*3 +j], node[i+1][node[i].length/4 -1 -j], node[i+1][node[i].length/4 -1 -j-1], node[i][node[i].length/4*3 +j+1]);
+          }
+        }
+        for (let i=0; i<node.length; i++) {
+          //gap_right
+          let n_u = createVector(w/2.0, node[i][node[i].length/4].y, z);
+          if (i != 0) {
+            n_u.y -= gap;
+          }
+          let n_d = createVector(w/2.0, node[i][node[i].length/4*3].y, z);
+          for (let j=0; j<node[i].length/4-1; j++) {
+            TRIANGLES_getTriangle(n_u, node[i][node[i].length/4 +j], node[i][node[i].length/4 +j+1]);
+            TRIANGLES_getTriangle(n_d, node[i][node[i].length/4*2 +j], node[i][node[i].length/4*2 +j+1]);
+          }
+          //gap_right-gap_middle
+          if (i < node.length-1) {
+            TRIANGLES_getTriangle(n_d, node[i][node[i].length/4*3-1], node[i+1][node[i+1].length/4]);
+          }
+          if (W_mess[i] < w) {
+            TRIANGLES_getRect(n_u, n_d, node[i][node[i].length/4*2], node[i][node[i].length/4*2-1]);
+          }
+        }
+
+        //coner
+        for (let i=0; i<node_coner.length-1; i++) {
+          TRIANGLES_getRect(node_coner[i][2], node_coner[i][3], node_coner[i+1][1], node_coner[i+1][2]);
+          TRIANGLES_getTriangle(node_coner[i][3], node_coner[i+1][0], node_coner[i+1][1]);
+          TRIANGLES_getRect(node_coner[i][3], node[i][node[i].length-1], node[i][node[i].length-2], node_coner[i+1][0]);
+          TRIANGLES_getTriangle(node_coner[i][3], node_coner[i][4], node[i][node[i].length-1]);
+        }
+        //coner-up
+        TRIANGLES_getRect(node_coner[0][0], node_coner[0][1], node_coner[0][2], node[0][2]);
+        TRIANGLES_getTriangle(node_coner[0][2], node[0][2], node[0][3]);
+        //coner-down
+        TRIANGLES_getRect(createVector(node_coner[num-1][2].x, h/2.0+Y_shake, z), node_coner[num-1][2], node_coner[num-1][3], node_coner[num-1][4]);
+        TRIANGLES_getRect(createVector(node_coner[num-1][2].x, h/2.0+Y_shake, z), node_coner[num-1][4], node[num-1][node[num-1].length-1], node[num-1][node[num-1].length-2]);
+        TRIANGLES_getRect(createVector(node_coner[num-1][2].x, h/2.0+Y_shake, z), node[num-1][node[num-1].length-2], node[num-1][node[num-1].length-3], node[num-1][node[num-1].length-4]);
+
+        //winFrame
+        TRIANGLES_getRect(createVector(-width, -height, z), createVector(width, -height, z), createVector(w/2.0, -h/2.0+Y_shake, z), createVector(node_coner[0][2].x, -h/2.0+Y_shake, z));
+        TRIANGLES_getRect(createVector(width, -height, z), createVector(width, height, z), createVector(w/2.0, h/2.0+Y_shake, z), createVector(w/2.0, -h/2.0+Y_shake, z));
+        TRIANGLES_getRect(createVector(-width, height, z), createVector(width, height, z), createVector(w/2.0, h/2.0+Y_shake, z), createVector(node_coner[0][2].x, h/2.0+Y_shake, z));
+        TRIANGLES_getRect(createVector(-width, -height, z), createVector(-width, height, z), createVector(node_coner[0][2].x, h/2.0+Y_shake, z), createVector(node_coner[0][2].x, -h/2.0+Y_shake, z));
+      } else {
+        for (let i=0; i<node.length; i++) {
+          for (let j=0; j<node[i].length; j++) {
+            LINES_getLine(node[i][j], node[i][(j+1)%node[i].length]);
+          }
+        }
+        for (let i=0; i<node_coner.length; i++) {
+          for (let j=0; j<node_coner[i].length-1; j++) {
+            LINES_getLine(node_coner[i][j], node_coner[i][j+1]);
+          }
+        }
+      }
     }
   }
 
@@ -839,8 +1175,14 @@ function drawWinFrame(w, h, w_fillet, num, state, gap) {
 
       if (dist(width/2, height-real(20), mouseX, mouseY) < real(15)) {
         fill(lerpColor(c_winFrame_copy, c_sky_copy, 0.55));
+        if (open_mode_line) {
+          fill(lerpColor(c_winFrame_copy, c_far_copy, 0.55));
+        }
       } else {
         fill(lerpColor(c_winFrame_copy, c_sky_copy, 0.35));
+        if (open_mode_line) {
+          fill(lerpColor(c_winFrame_copy, c_far_copy, 0.35));
+        }
       }
       TRIANGLES_getShape(node_f);
     } else {
@@ -1736,6 +2078,300 @@ function drawHandle(W, H, Z) {
       LINES_getLine(node_handle[i][1], node_handle[i][2]);
       LINES_getLine(node_handle[i][1], node_handle[i][3]);
       LINES_getLine(node_handle[i][2], node_handle[i][3]);
+    }
+  }
+}
+
+
+
+
+function drawShutter(W, H, Z) {
+
+
+  let w = map(sin(map(time_shutter, 0, time_max_shutter, 0, PI)), 0, 1, max(W, H)*0.5+real(50), max(W, H)*0.01);
+  let h = map(sin(map(time_shutter, 0, time_max_shutter, 0, PI)), 0, 1, max(W, H)*0.5+real(50), max(W, H)*0.01);
+  let w_gap = map(sin(map(time_shutter, 0, time_max_shutter, 0, PI)), 0, 1, real(3), real(0.5));
+  let angle = map(sin(map(time_shutter, 0, time_max_shutter, 0, PI)), 0, 1, 0, HALF_PI*0.85);
+  let node = Array.from(Array(6), () => new Array(3));
+  for (let i=0; i<node.length; i++) {
+    let x = cos(map(i, 0, node.length, 0, TWO_PI)+angle) * w;
+    let y = sin(map(i, 0, node.length, 0, TWO_PI)+angle) * h;
+    node[i][0] = createVector(x, y+Y_shake, Z-real(0.5));
+  }
+  for (let i=0; i<node.length; i++) {
+    node[i][1] = p5.Vector.sub(node[(i+1)%node.length][0], node[i][0]).setMag(real(500)).add(node[(i+1)%node.length][0]);
+  }
+  for (let i=0; i<node.length; i++) {
+    node[i][2] = node[(i+node.length-1)%node.length][1].copy();
+  }
+  for (let i=0; i<node.length; i++) {
+    node[i][0] = p5.Vector.sub(node[i][1], node[i][0]).setMag(w_gap).add(node[i][0]);
+    node[i][2] = p5.Vector.sub(node[i][1], node[i][2]).setMag(w_gap*0.5).add(node[i][2]);
+  }
+
+
+  if (!open_info) {
+    fill(c_winFrame);
+    for (let i=0; i<node.length; i++) {
+      TRIANGLES_getTriangle(node[i][0], node[i][1], node[i][2]);
+    }
+  } else {
+    for (let i=0; i<node.length; i++) {
+      LINES_getLine(node[i][0], node[i][1]);
+      LINES_getLine(node[i][1], node[i][2]);
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+function drawBlink(W, H, Z) {
+  let t = abs(sin(map(time_blink, 0, time_max_blink, 0, PI*num_blink)));
+
+  let node_begin = new Array(8);
+  for (let i=0; i<node_begin.length; i++) {
+    let x = cos(map(i, 0, node_begin.length-1, -HALF_PI*0.5, -PI+HALF_PI*0.5)) * (W*0.8);
+    let y = sin(map(i, 0, node_begin.length-1, -HALF_PI*0.5, -PI+HALF_PI*0.5)) * (H*1.5)  + H*0.7;
+    node_begin[i] = createVector(x, y+Y_shake, Z-real(0.5));
+  }
+  let node_end = new Array(node_begin.length);
+  for (let i=0; i<node_end.length; i++) {
+    let x = cos(map(i, 0, node_end.length-1, HALF_PI*0.5, PI-HALF_PI*0.5)) * (W*0.8);
+    let y = sin(map(i, 0, node_end.length-1, HALF_PI*0.5, PI-HALF_PI*0.5)) * (H*0.75)  - H*0.05;
+    node_end[i] = createVector(x, y+Y_shake, Z-real(0.5));
+  }
+  let node = new Array(node_begin.length);
+  for (let i=0; i<node.length; i++) {
+    node[i] = lerpVector(node_begin[i], node_end[i], t);
+  }
+
+
+  if (!open_info) {
+    fill(c_winFrame);
+    //fill(255, 0, 0);
+
+    TRIANGLES_getTriangle(node[0], createVector(W, -H*2, Z+real(0.5)), createVector(0, -H*2, Z+real(0.5)));
+    TRIANGLES_getTriangle(node[node.length-1], createVector(-W, -H*2, Z+real(0.5)), createVector(0, -H*2, Z+real(0.5)));
+    for (let i=0; i<node_end.length-1; i++) {
+      TRIANGLES_getTriangle(node[i], node[i+1], createVector(0, -H*2, Z+real(0.5)));
+    }
+  } else {
+    for (let i=0; i<node.length-1; i++) {
+      LINES_getLine(node[i], node[i+1]);
+    }
+  }
+}
+
+
+
+
+function drawFlash(W, H, Z) {
+  let node = new Array(num_node_flash);
+  let h = new Array(node.length);
+  let w = new Array(node.length);
+  let x = map(time_flash, 0, time_max_flash, -W/2.0-real(50), W/2.0+real(50));
+
+
+  for (let i=0; i<node.length; i++) {
+    w[i] = map(noise(ran_flash+i), 0, 1, real(5), real(75));
+    h[i] = map(noise(ran_flash+i+996), 0, 1, real(2.5), real(25));
+  }
+  for (let i=0; i<node.length; i++) {
+    node[i] = createVector(0, H*0.6, Z-real(5));
+    if (i > 0) {
+      let s_h = 0;
+      for (let j=0; j<i; j++) {
+        s_h += h[j];
+      }
+      s_h += h[i]/2.0;
+      node[i].y -= s_h;
+    } else {
+      node[i].y -= h[0]/2.0;
+    }
+    node[i].x = x;
+  }
+
+
+
+  if (open_flash) {
+    if (!open_info) {
+      fill(lerpColor(c_winFrame, c_sky, 0.15));
+      for (let i=0; i<node.length; i++) {
+        let s_h = map(time_flash, 0, time_max_flash, h[i]*1, h[i]*0.5);
+        TRIANGLES_getTriangle(node[i].copy().add(-map(time_flash, 0, time_max_flash, w[i]*0.15, w[i]*4), 0, 0), node[i].copy().add(0, -s_h, 0), node[i].copy().add(0, s_h, 0));
+        TRIANGLES_getTriangle(node[i].copy().add(w[i]*0.25+real(5), 0, 0), node[i].copy().add(real(5), -h[i]*0.75, 0), node[i].copy().add(real(5), h[i]*0.75, 0));
+      }
+      TRIANGLES_getLine_weight(node[0], node[node.length-1].copy().add(0, -map(time_flash, 0, time_max_flash, h[node.length-1], h[node.length-1]*0.5), 0), real(10));
+    }
+  }
+}
+
+
+
+
+function drawFan(node_frame, W, H, Z) {
+  //let center = p5.Vector.add(node_frame[0], node_frame[floor(node_frame.length/2)]).mult(0.5);
+
+  let center = createVector((node_frame[0].x+node_frame[node_frame.length/2-1].x)/2.0, (node_frame[node_frame.length/4-1].y+node_frame[node_frame.length/4*3-1].y)/2.0, Z);
+
+  let w = min(W, H)*0.45;
+
+  let node = new Array(floor(map(H, real(75), real(180), 4, 10)));
+  for (let i=0; i<node.length; i++) {
+    node[i] = new Array(2);
+    for (let j=0; j<2; j++) {
+      let x = (W*0.5+real(10)) * pow(-1, j+1);
+      let y = map(i, -1, node.length, -H*0.5, H*0.5);
+      node[i][j] = createVector(x, y, -real(0.5)).add(center);
+    }
+  }
+
+  let node_fan = new Array(6);
+  for (let i=0; i<node_fan.length; i++) {
+    node_fan[i] = new Array(3);
+    for (let j=0; j<node_fan[i].length; j++) {
+      let w_angle = HALF_PI*0.13 * pow(-1, j);
+      let x = cos(map(i, 0, node_fan.length, 0, TWO_PI) + w_angle - time_fan) * w;
+      let y = sin(map(i, 0, node_fan.length, 0, TWO_PI) + w_angle - time_fan) * w;
+      if (j == 0) {
+        x = cos(map(i, 0, node_fan.length, 0, TWO_PI) + PI - time_fan) * w*0.2;
+        y = sin(map(i, 0, node_fan.length, 0, TWO_PI) + PI - time_fan) * w*0.2;
+      }
+      node_fan[i][j] = createVector(x, y, -real(0.5)).add(center);
+    }
+  }
+
+
+
+  if (!open_info) {
+    fill(c_winFrame);
+
+    for (let i=0; i<node.length; i++) {
+      TRIANGLES_getLine_weight_Y(node[i][0], node[i][1], real(1));
+    }
+    TRIANGLES_getLine_weight(createVector(-W*0.333, -H*0.5-real(10), 0).add(center), createVector(-W*0.333, H*0.5+real(10), 0).add(center), real(1));
+    TRIANGLES_getLine_weight(createVector(W*0.333, -H*0.5-real(10), 0).add(center), createVector(W*0.333, H*0.5+real(10), 0).add(center), real(1));
+    TRIANGLES_getLine_weight_Y(createVector(-W*0.5-real(10), 0, 0).add(center), createVector(W*0.5+real(10), 0, 0).add(center), real(5));
+    TRIANGLES_getLine_weight(createVector(0, -H*0.5-real(10), 0).add(center), createVector(0, H*0.5+real(10), 0).add(center), real(5));
+
+    for (let i=0; i<node_fan.length; i++) {
+      TRIANGLES_getTriangle(node_fan[i][0], node_fan[i][1], node_fan[i][2]);
+    }
+  } else {
+    for (let i=0; i<node.length; i++) {
+      LINES_getLine(node[i][0], node[i][1]);
+    }
+    for (let i=0; i<node_fan.length; i++) {
+      for (let j=0; j<node_fan[i].length; j++) {
+        LINES_getLine(node_fan[i][j], node_fan[i][(j+1)%node_fan[i].length]);
+      }
+    }
+  }
+}
+
+
+
+
+
+
+function drawLED(node_frame, W, H, Z, num_frame, index_frame) {
+  let center = createVector((node_frame[0].x+node_frame[node_frame.length/2-1].x)/2.0, (node_frame[node_frame.length/4-1].y+node_frame[node_frame.length/4*3-1].y)/2.0, Z);
+  let node_frame_plus = new Array(node_frame.length);
+  for (let i=0; i<node_frame_plus.length; i++) {
+    node_frame_plus[i] = node_frame[i].copy();
+    node_frame_plus[i].x -= center.x;
+    node_frame_plus[i].y -= center.y;
+    node_frame_plus[i].z = 0;
+    if (num_frame == 1) {
+      node_frame_plus[i].x *= (W+real(20))/W;
+      node_frame_plus[i].y *= (H+real(20))/H;
+    } else if (num_frame == 2) {
+      node_frame_plus[i].x *= (W+real(16))/W;
+      node_frame_plus[i].y *= (H+real(16))/H;
+    } else {
+      node_frame_plus[i].x *= (W+real(10))/W;
+      node_frame_plus[i].y *= (H+real(10))/H;
+    }
+    node_frame_plus[i].add(center);
+  }
+
+
+  let sum = 0;
+  for (let i=0; i<node_frame_plus.length; i++) {
+    sum += p5.Vector.dist(node_frame_plus[i], node_frame_plus[(i+1)%node_frame_plus.length]);
+  }
+  let gap = sum / num_LED;
+
+
+  let center_LED = new Array(num_LED);
+  let d = 0;
+  let index_LED = 0;
+  for (let i=0; i<node_frame_plus.length; i++) {
+    d += p5.Vector.dist(node_frame_plus[i], node_frame_plus[(i+1)%node_frame_plus.length]);
+
+    for (let j=0; j<10; j++) {
+      if (d >= gap*index_LED) {
+        center_LED[index_LED] = p5.Vector.sub(node_frame_plus[i], node_frame_plus[(i+1)%node_frame_plus.length]).setMag(d-gap*index_LED).add(node_frame_plus[(i+1)%node_frame_plus.length]);
+        index_LED += 1;
+      } else {
+        break;
+      }
+    }
+  }
+
+
+  for (let i=0; i<center_LED.length; i++) {
+    center_LED[i].z += real(0.25);
+  }
+
+
+  let node_LED = Array.from(Array(num_LED), () => new Array(4));
+  for (let i=0; i<node_LED.length; i++) {
+    for (let j=0; j<node_LED[i].length; j++) {
+      node_LED[i][j] = new Array(4);
+      let w = map(j, 0, node_LED[i].length-1, real(0.5), real(2.5));
+      if (num_frame == 3) {
+        w = map(j, 0, node_LED[i].length-1, real(0.25), real(1.7));
+      }
+      let z = map(j, 0, node_LED[i].length-1, real(0.5), 0);
+      for (let k=0; k<node_LED[i][j].length; k++) {
+        let x = cos(map(k, 0, node_LED[i][j].length, 0, TWO_PI)) * w;
+        let y = sin(map(k, 0, node_LED[i][j].length, 0, TWO_PI)) * w;
+        node_LED[i][j][k] = createVector(x, y, z).add(center_LED[i]);
+      }
+    }
+  }
+
+
+
+  if (!open_info) {
+
+    for (let i=0; i<node_LED.length; i++) {
+      for (let j=0; j<node_LED[i].length; j++) {
+        let t = sin(map(constrain(time_breathe[(i+floor(num_LED/(num_frame))*index_frame)%node_LED.length], 0, 120), 0, 120, 0, PI)) * 0.85;
+        t += sin(map(time_LED_shine, 0, 12, 0, PI)) * 0.85;
+        t = constrain(t, 0, 0.85);
+        if (t > 0) {
+          if (have_button_invert) {
+            fill(lerpColor(c_winFrame_copy, c_far_copy, map(j, 0, node_LED[i].length, t, 0)));
+          } else {
+            fill(lerpColor(c_winFrame, c_far, map(j, 0, node_LED[i].length, t, 0)));
+          }
+          TRIANGLES_getRect(node_LED[i][j][0], node_LED[i][j][1], node_LED[i][j][2], node_LED[i][j][3]);
+        }
+      }
+    }
+  } else {
+    for (let i=0; i<node_LED.length; i++) {
+      for (let j=0; j<node_LED[i][node_LED[i].length-1].length; j++) {
+        LINES_getLine(node_LED[i][node_LED[i].length-1][j], node_LED[i][node_LED[i].length-1][(j+1)%node_LED[i][node_LED[i].length-1].length]);
+      }
     }
   }
 }

@@ -301,7 +301,7 @@ function CastleTowerHouse(begin, W, D, H, floor_num, index_z, index_block, have_
 
 
   this.have_roof = false;
-  if (open_CTRoof  &&  random(1)<rate_CTRoof) {
+  if (open_roof  &&  random(1)<rate_roof) {
     this.have_roof = true;
   }
 
@@ -696,7 +696,7 @@ function CastleTowerHouse(begin, W, D, H, floor_num, index_z, index_block, have_
 
 
     this.have_roof = false;
-    if (open_CTRoof  &&  random(1)<rate_CTRoof) {
+    if (open_roof  &&  random(1)<rate_roof) {
       this.have_roof = true;
     }
 

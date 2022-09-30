@@ -4,9 +4,16 @@ function RoadHor(begin, W, L, index, index_z) {
   this.L_target = L+gap_block;
   this.L = 0.0;
   this.W = W;
-  this.W_road = W_road_basic * 0.5;
+  this.W_road = real(150) * 0.5;
   this.index = index;
   this.index_z = index_z;
+
+  this.rate_show_lamp = 0.5;
+  if (state_gap_block == 3) {
+    this.rate_show_lamp = 0.3;
+  } else if (state_gap_block == 2) {
+    this.rate_show_lamp = 0.4;
+  }
 
 
   this.node_center = this.begin.copy().add(this.L_target/2.0 - gap_block/2.0, 0, this.W/2.0);
@@ -61,8 +68,8 @@ function RoadHor(begin, W, L, index, index_z) {
 
 
 
-    this.node_lampB[i][0] = createVector(x, this.node_center.y, this.node_center.z+(this.W-this.W_road)/2.0-real(10));
-    this.node_lampB[i][1] = createVector(x, this.node_center.y-this.H_lampB[i], this.node_center.z+(this.W-this.W_road)/2.0-real(10) +this.Z_lampB_tilt[i]);
+    this.node_lampB[i][0] = createVector(x, this.node_center.y, this.node_center.z-this.W_road/2.0-real(10));
+    this.node_lampB[i][1] = createVector(x, this.node_center.y-this.H_lampB[i], this.node_center.z-this.W_road/2.0-real(10) +this.Z_lampB_tilt[i]);
 
     for (let j=2; j<this.node_lampB[i].length; j++) {
       let z_filletB = cos(map(j, 2-1, this.node_lampB[i].length-1, PI, TWO_PI-QUARTER_PI)) * (this.W_lampB_fillet[i]/2.0) - (this.W_lampB_fillet[i]/2.0);
@@ -78,7 +85,7 @@ function RoadHor(begin, W, L, index, index_z) {
     this.W_lampF_fillet[i] = this.H_lampF_target[i] * random(0.1, 0.25);
     this.Z_lampF_tilt[i] = real(map(noise(i*10+this.ran), 0, 1, -30, 20));
 
-    this.node_lampF[i][0] = createVector(x, this.node_center.y, this.node_center.z+this.W-(this.W-this.W_road)/2.0+real(10));
+    this.node_lampF[i][0] = createVector(x, this.node_center.y, this.node_center.z+this.W_road/2.0+real(10));
     this.node_lampF[i][1] = this.node_lampF[i][0].copy().add(0, -this.H_lampF[i], this.Z_lampF_tilt[i]);
 
     for (let j=2; j<this.node_lampF[i].length; j++) {
@@ -91,8 +98,8 @@ function RoadHor(begin, W, L, index, index_z) {
 
 
 
-    this.show_lampB[i] = noise(this.ran+i*10) < 0.5;
-    this.show_lampF[i] = noise(this.ran+i*10+999) < 0.5;
+    this.show_lampB[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+    this.show_lampF[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
 
     if (index_z == 5  ||  !this.show_road) {
       this.show_lampB[i] = false;
@@ -150,8 +157,8 @@ function RoadHor(begin, W, L, index, index_z) {
       this.Z_lampF_tilt[i] = real(map(noise(i*10+this.ran), 0, 1, -30, 20));
 
 
-      this.show_lampB[i] = noise(this.ran+i*10) < 0.5;
-      this.show_lampF[i] = noise(this.ran+i*10+999) < 0.5;
+      this.show_lampB[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+      this.show_lampF[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
 
       if (index_z == 5  ||  !this.show_road) {
         this.show_lampB[i] = false;
@@ -231,8 +238,8 @@ function RoadHor(begin, W, L, index, index_z) {
 
 
       let x = map(i, 0-1, this.node_lampB.length, this.node_center.x-this.L_target/2.0, this.node_center.x+this.L_target/2.0);
-      this.node_lampB[i][0] = createVector(x, this.node_center.y, this.node_center.z+(this.W-this.W_road)/2.0-real(10));
-      this.node_lampB[i][1] = createVector(x, this.node_center.y-this.H_lampB[i], this.node_center.z+(this.W-this.W_road)/2.0-real(10) +this.Z_lampB_tilt[i]);
+      this.node_lampB[i][0] = createVector(x, this.node_center.y, this.node_center.z-this.W_road/2.0-real(10));
+      this.node_lampB[i][1] = createVector(x, this.node_center.y-this.H_lampB[i], this.node_center.z-this.W_road/2.0-real(10) +this.Z_lampB_tilt[i]);
 
       for (let j=2; j<this.node_lampB[i].length; j++) {
         let z_filletB = cos(map(j, 2-1, this.node_lampB[i].length-1, PI, TWO_PI-QUARTER_PI)) * (this.W_lampB_fillet[i]/2.0) - (this.W_lampB_fillet[i]/2.0);
@@ -241,7 +248,7 @@ function RoadHor(begin, W, L, index, index_z) {
       }
 
 
-      this.node_lampF[i][0] = createVector(x, this.node_center.y, this.node_center.z+this.W-(this.W-this.W_road)/2.0+real(10));
+      this.node_lampF[i][0] = createVector(x, this.node_center.y, this.node_center.z+this.W_road/2.0+real(10));
       this.node_lampF[i][1] = this.node_lampF[i][0].copy().add(0, -this.H_lampF[i], this.Z_lampF_tilt[i]);
 
       for (let j=2; j<this.node_lampF[i].length; j++) {
@@ -254,8 +261,8 @@ function RoadHor(begin, W, L, index, index_z) {
 
 
 
-      this.show_lampB[i] = noise(this.ran+i*10) < 0.5;
-      this.show_lampF[i] = noise(this.ran+i*10+999) < 0.5;
+      this.show_lampB[i] = noise(this.ran+i*10) < this.rate_show_lamp;
+      this.show_lampF[i] = noise(this.ran+i*10+999) < this.rate_show_lamp;
 
       if (index_z == 5  ||  !this.show_road) {
         this.show_lampB[i] = false;
@@ -307,7 +314,7 @@ function RoadHor(begin, W, L, index, index_z) {
 
 
   this.displayInfo = function() {
-    if (!open_desert  &&  this.show_road) {
+    if (this.show_road) {
       for (let i=0; i<this.node.length; i++) {
         LINES_getLine(this.node[i], this.node[(i+1)%this.node.length]);
       }

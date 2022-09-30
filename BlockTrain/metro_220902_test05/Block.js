@@ -69,7 +69,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
 
 
         let sum = rate_normalHouse + rate_constrHouse + rate_catHouse + rate_CTowerHouse + rate_firewatchHouse + rate_blockHouse + rate_dottedHouse + rate_UGHouse + rate_orientHouse;
-        sum = max(sum, 1);
+
         const real_rate_normalHouse = rate_normalHouse / sum;
         const real_rate_constrHouse = rate_constrHouse / sum;
         const real_rate_catHouse = rate_catHouse / sum;
@@ -81,6 +81,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
         const real_rate_orientHouse = rate_orientHouse / sum;
 
         const var_rate = random(1);
+
 
 
         if (var_rate < real_rate_normalHouse) {
@@ -355,13 +356,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
 
 
 
-  if (have_button_spring) {
-    this.open_spring = false;
-    this.time_spring = 0;
-    this.time_max_spring = floor(random(5, 8));
-    this.H_add_spring = 0;
-    this.H_add_target_spring = real(random(20, 30));
-  }
+
 
 
 
@@ -450,8 +445,8 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
     this.popupTent = [];
     for (let i=0; i<3; i++) {
       const w = real(75);
-      const z = map(i, 0, 3, this.begin.z-gap_block, this.begin.z+this.D);
-      const d = abs((this.begin.z-gap_block) - (this.begin.z+this.D)) / 3.0;
+      const z = map(i, 0, 3, this.begin.z-gap_block_ver, this.begin.z+this.D);
+      const d = abs((this.begin.z-gap_block_ver) - (this.begin.z+this.D)) / 3.0;
       if (random(1)<0.75) {
         this.stall.push(new Stall(createVector(this.begin.x+real(50), this.begin.y, z), w, d, true));
       } else {
@@ -512,9 +507,9 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
       this.H_gate[i][1] = 0;
       this.X_move_gate[i][0] = real(random(-20, 20));
       this.X_move_gate[i][1] = real(random(-20, 20));
-      this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+      this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
       this.node_gate[i][1] = this.node_gate[i][0].copy().add(this.X_move_gate[i][0], -this.H_gate[i][0], 0);
-      this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+      this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
       this.node_gate[i][3] = this.node_gate[i][2].copy().add(this.X_move_gate[i][1], -this.H_gate[i][1], 0);
     }
     this.Y_add_rope = new Array(num_gate);
@@ -540,7 +535,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
         if (!this.show_gate[i]) {
           if (random(1) < map(this.index_z, 0, 5, 0.5, 0.001)/(1+this.NM_paifang.length*2)) {
             const w = min(this.W / this.node_gate.length * 0.9, real(350));
-            this.NM_paifang.push(new Paifang(createVector(this.begin.x  + (this.W/this.node_gate.length-w)/2.0  +  i*(this.W/this.node_gate.length), this.begin.y, this.begin.z -gap_block), w));
+            this.NM_paifang.push(new Paifang(createVector(this.begin.x  + (this.W/this.node_gate.length-w)/2.0  +  i*(this.W/this.node_gate.length), this.begin.y, this.begin.z -gap_block_ver), w));
           }
         }
       }
@@ -775,8 +770,8 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
         this.popupTent = [];
         for (let i=0; i<3; i++) {
           const w = real(75);
-          const z = map(i, 0, 3, this.begin.z-gap_block, this.begin.z+this.D);
-          const d = abs((this.begin.z-gap_block) - (this.begin.z+this.D)) / 3.0;
+          const z = map(i, 0, 3, this.begin.z-gap_block_ver, this.begin.z+this.D);
+          const d = abs((this.begin.z-gap_block_ver) - (this.begin.z+this.D)) / 3.0;
           if (random(1)<0.75) {
             this.stall.push(new Stall(createVector(this.begin.x+real(50), this.begin.y, z), w, d, true));
           } else {
@@ -830,9 +825,9 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
           this.H_gate[i][1] = 0;
           this.X_move_gate[i][0] = real(random(-20, 20));
           this.X_move_gate[i][1] = real(random(-20, 20));
-          this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+          this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
           this.node_gate[i][1] = this.node_gate[i][0].copy();
-          this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+          this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
           this.node_gate[i][3] = this.node_gate[i][2].copy();
         }
         for (let i=0; i<this.node_gate_rope.length; i++) {
@@ -858,7 +853,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
             if (!this.show_gate[i]) {
               if (random(1) < map(this.index_z, 0, 5, 0.5, 0.001)/(1+this.NM_paifang.length*2)) {
                 const w = min(this.W / this.node_gate.length * 0.9, real(350));
-                this.NM_paifang.push(new Paifang(createVector(this.begin.x  + (this.W/this.node_gate.length-w)/2.0  +  i*(this.W/this.node_gate.length), this.begin.y, this.begin.z -gap_block), w));
+                this.NM_paifang.push(new Paifang(createVector(this.begin.x  + (this.W/this.node_gate.length-w)/2.0  +  i*(this.W/this.node_gate.length), this.begin.y, this.begin.z -gap_block_ver), w));
               }
             }
           }
@@ -891,17 +886,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
 
 
 
-    if (state_click == 4) {
-      if (this.isHouse) {
-        if (this.houses.length > 0) {
-          for (let i=0; i<this.houses.length; i++) {
-            if (this.houses[i].is_normalHouse  ||  this.houses[i].is_constr || this.houses[i].is_cat) {
-              this.houses[i].changeW();
-            }
-          }
-        }
-      }
-    }
+  
   };
 
 
@@ -1022,16 +1007,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
     }
 
 
-    if (!this.open_spring ) {
-      this.open_spring = true;
-      this.time_spring = 0;
-      this.time_max_spring = floor(random(3, 8));
-      this.H_add_spring = 0;
-      this.H_add_target_spring = real(random(15, 20));
-      if (state_floor == 3) {
-        this.H_add_target_spring = real(random(40, 60));
-      }
-    }
+
   };
 
 
@@ -1426,9 +1402,9 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
       for (let i=0; i<this.node_gate.length; i++) {
         this.H_gate[i][0] = easing_x(this.H_gate[i][0], this.H_gate_target[i][0], 0.25);
         this.H_gate[i][1] = easing_x(this.H_gate[i][1], this.H_gate_target[i][1], 0.25);
-        this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+        this.node_gate[i][0] = createVector(this.begin.x+real(50) + (this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
         this.node_gate[i][1] = this.node_gate[i][0].copy().add(this.X_move_gate[i][0], -this.H_gate[i][0], 0);
-        this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block);
+        this.node_gate[i][2] = createVector(this.begin.x+(this.W/this.node_gate.length)-real(50) +(this.W/2.0*i), this.begin.y, this.begin.z -gap_block_ver);
         this.node_gate[i][3] = this.node_gate[i][2].copy().add(this.X_move_gate[i][1], -this.H_gate[i][1], 0);
         for (let j=0; j<this.node_gate_rope[i].length; j++) {
           const be = this.node_gate[i][1].copy();
@@ -1507,14 +1483,7 @@ function Block(begin, W, D, index_z, index, isHouse, isRiver, isMountain, isSea,
 
 
 
-    if (have_button_spring  &&  this.open_spring) {
-      if (this.time_spring < this.time_max_spring) {
-        this.time_spring ++;
-      } else {
-        this.open_spring = false;
-      }
-      this.H_add_spring = map(sin(map(this.time_spring, 0, this.time_max_spring, 0, PI)), 0, 1, 0, this.H_add_target_spring);
-    }
+
 
 
 

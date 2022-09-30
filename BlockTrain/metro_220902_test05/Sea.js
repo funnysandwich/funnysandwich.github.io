@@ -12,7 +12,7 @@ function Sea(begin, W_block, detail, count_noise) {
   this.node = new Array(detail);
   for (let i=0; i<this.node.length; i++) {
     const x = map(i, 0, this.node.length-1, this.begin.x, this.begin.x-this.W);
-    const z = skyline.z + real(250) + (this.haveBlocksNum-1)*(gap_block+real(500)) + map(noise(count_noise + i), 0, 1, -real(2500), real(300));
+    const z = skyline.z + real(250) + (this.haveBlocksNum-1)*(gap_block_ver+real(500)) + map(noise(count_noise + i), 0, 1, -real(2500), real(300));
     this.node[i] = createVector(x, this.begin.y-real(1), z);
   }
 
@@ -52,7 +52,7 @@ function Sea(begin, W_block, detail, count_noise) {
 
     for (let i=0; i<this.node.length; i++) {
       const x = map(i, 0, this.node.length-1, this.begin.x, this.begin.x-this.W);
-      const z = skyline.z + real(250) + (this.haveBlocksNum-1)*(gap_block+real(500)) + map(noise((count_noise+i)*0.1, frameCount*0.0025), 0, 1, -real(600), real(300));
+      const z = skyline.z + real(250) + (this.haveBlocksNum-1)*(gap_block_ver+real(500)) + map(noise((count_noise+i)*0.1, frameCount*0.0025), 0, 1, -real(600), real(300));
       this.node[i] = createVector(x, this.begin.y-real(1), z);
     }
   };

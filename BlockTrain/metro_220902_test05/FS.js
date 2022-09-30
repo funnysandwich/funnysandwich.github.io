@@ -14,6 +14,17 @@ function changeBrightness(c, v) {
   return c;
 }
 
+function changeSB(c, v_s, v_b) {
+  let h = hue(c);
+  let s = constrain(saturation(c)+v_s, 0, 255);
+  let b = constrain(lightness(c)+v_b, 0, 100);
+
+  colorMode(HSL);
+  c = color(h, s, b);
+  colorMode(RGB, 255);
+  return c;
+}
+
 
 function easing_p(p, target, varlue) {
   if (p5.Vector.dist(p, target) > 0.0001) {
@@ -53,6 +64,15 @@ function PRotateZ(p, angle) {
   p_new.rotate(angle);
   let p_final = createVector(p_new.x, p_new.y, p.z);
   return p_final;
+}
+
+
+function lerpVector(p1, p2, v) {
+  let p3 = p1.copy();
+  p3.x = lerp(p1.x, p2.x, v);
+  p3.y = lerp(p1.y, p2.y, v);
+  p3.z = lerp(p1.z, p2.z, v);
+  return p3;
 }
 
 

@@ -66,10 +66,32 @@ function displayInfo() {
   PG.fill(c_info1);
   PG.textAlign(LEFT);
   PG.textSize(8);
-  str_info[0] = ("Speed: " + nfc(speed*scaleRate, 2));
-  str_info[1] = ("Mileage: "+nfc(mileage*scaleRate, 2));
+
+  if (state_speed == 0) {
+    str_info[0][str_info[0].length-1] = ("Speed: LAZY");
+  } else if (state_speed == 1) {
+    str_info[0][str_info[0].length-1] = ("Speed: SLOW");
+  } else if (state_speed == 2) {
+    str_info[0][str_info[0].length-1] = ("Speed: NORMAL");
+  } else if (state_speed == 3) {
+    str_info[0][str_info[0].length-1] = ("Speed: FAST");
+  } else if (state_speed == 4) {
+    str_info[0][str_info[0].length-1] = ("Speed: FAST+");
+  } else if (state_speed == 5) {
+    str_info[0][str_info[0].length-1] = ("Speed: HURRY");
+  }
+  str_info[0][str_info[0].length-1] += (" ("+nfc(speed*scaleRate, 2) + "), Mileage: "+nfc(mileage*scaleRate, 2));
+  let count = 0;
   for (let i=0; i<str_info.length; i++) {
-    PG.text(str_info[i], x+150*floor(i/37), y+gap*floor(i%37));
+    if (str_info[i].length > 0) {
+      for (let j=0; j<str_info[i].length; j++) {
+        PG.text(str_info[i][j], x+150*floor(count/37), y+gap*floor(count%37));
+        count ++;
+      }
+    } else {
+      PG.text(str_info[i], x+150*floor(count/37), y+gap*floor(count%37));
+      count ++;
+    }
   }
 
   //PG.noFill();
@@ -94,11 +116,17 @@ function displayInfo() {
   //}
 
 
+  PG.textAlign(CENTER);
+  PG.textSize(10);    
 
-  if (mouseX*scaleRate<17) {
-    PG.textAlign(CENTER);
+  if (!open_mode_line) {
     PG.fill(c_winFrame);
-    PG.textSize(10);
+  } else {
+    PG.fill(c_far);
+  }
+
+
+  if (mouseX*scaleRate<17  ||  is_phone) {
     PG.push();
     PG.rotate(-HALF_PI);
     PG.translate(-PG.height/2, 16);
@@ -106,15 +134,10 @@ function displayInfo() {
     PG.pop();
     PG.noStroke();
   }
-  if (mouseY*scaleRate>height*scaleRate-17) {
-    PG.textAlign(CENTER);
-    PG.textSize(10);
-    PG.fill(c_winFrame);
+  if (mouseY*scaleRate>height*scaleRate-17  ||  is_phone) {
     PG.text("@funnysandwich 2021.09.13", PG.width/2, PG.height-8);
-  } else if (mouseY*scaleRate<17) {
-    PG.textAlign(CENTER);
-    PG.textSize(10);
-    PG.fill(c_winFrame);
+  } 
+  if (mouseY*scaleRate<17  ||  is_phone) {
     PG.text("fps: "+nfc(frameRate(), 1)+"/30", PG.width/2, 16);
   }
 }

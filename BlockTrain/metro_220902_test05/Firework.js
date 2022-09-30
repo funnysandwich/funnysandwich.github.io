@@ -1,4 +1,4 @@
-function Firework(begin) {
+function Firework(begin, index_song) {
   this.ran = random(-999, 999);
   this.begin = begin.copy();
   if (open_mountain) {
@@ -76,6 +76,9 @@ function Firework(begin) {
             for (let j=0; j<this.node_boom[i].length; j++) {
               this.node_boom[i][j] = this.node[0].copy();
             }
+          }
+          if(is_onTheGround){
+          song_boom[index_song].play();
           }
         }
         this.is_boom = true;

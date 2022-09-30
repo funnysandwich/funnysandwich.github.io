@@ -48,10 +48,10 @@ function FOG_display() {
   fill(255);
   beginShape();
   texture(FOG);
-  vertex(-real(115), -real(115), real(198), 0, 0);
-  vertex(real(115), -real(115), real(198), 1, 0);
-  vertex(real(115), real(115), real(198), 1, 1);
-  vertex(-real(115), real(115), real(198), 0, 1);
+  vertex(-real(115), -real(115)-cameraY+Y_shake, real(198), 0, 0);
+  vertex(real(115), -real(115)-cameraY+Y_shake, real(198), 1, 0);
+  vertex(real(115), real(115)-cameraY+Y_shake, real(198), 1, 1);
+  vertex(-real(115), real(115)-cameraY+Y_shake, real(198), 0, 1);
   endShape();
   fill(255);
 }
