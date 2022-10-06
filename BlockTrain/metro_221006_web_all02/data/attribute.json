@@ -1,0 +1,40 @@
+{
+  "mainVar": {
+    "Phase01": {
+      "Shape": 0,
+      "Decoration": 0,
+      "Color": 0,
+      "Density": 1,
+      "RoadWidth": 1,
+      "ViewHeight": 1,
+      "Speed": 2
+    },
+    "Phase02": {
+      "Landscape": 0,
+      "Arrange": 0,
+      "House_Usual_1": 0,
+      "House_Usual_2": 0,
+      "House_Rare_1": 0,
+      "House_Rare_2": 0,
+      "SpecialStreet": 0
+    },
+    "Phase03": {
+      "Object_First": 22,
+      "Object_Second": 23,
+      "Object_Third": 24
+    },
+    "Phase04": {
+      "Weather": 9,
+      "Button": {
+        "Button_Stop": 1,
+        "Button_Sprint": 1,
+        "Button_Jump": 1,
+        "Button_Regenerate": 1,
+        "Button_Shine": 1,
+        "Button_Submerge": 0,
+        "Button_Spring": 0,
+        "Button_Invert": 1
+      }
+    }
+  }
+}
